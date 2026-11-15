@@ -1,0 +1,3894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0a0f1d" />
+  <title>Monopolio Reserve Bank &bull; Digital Banker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: rgba(17, 24, 39, 0.85);
+      --bg-card-subtle: rgba(30, 41, 59, 0.6);
+      --border-card: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(234, 179, 8, 0.5);
+      
+      --gold-primary: #f59e0b;
+      --gold-light: #fef08a;
+      --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      --emerald-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --crimson-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      --sapphire-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --purple-gradient: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      
+      --text-main: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      
+      --shadow-glow-gold: 0 0 25px rgba(245, 158, 11, 0.25);
+      --shadow-glow-emerald: 0 0 25px rgba(16, 185, 129, 0.28);
+      --shadow-glow-blue: 0 0 25px rgba(59, 130, 246, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    input, button, select, textarea {
+      font-family: inherit;
+      user-select: auto;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        linear-gradient(to bottom, #090e1a 0%, #060911 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Board Texture overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* TOP BAR */
+    .header-bar {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+      position: relative;
+    }
+
+    .brand-icon::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 16px;
+      background: var(--gold-gradient);
+      z-index: -1;
+      opacity: 0.35;
+      filter: blur(6px);
+    }
+
+    .brand-text h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #fef08a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .top-stats-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #cbd5e1;
+    }
+
+    .stat-pill strong {
+      color: #fbbf24;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-header {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-header:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-header.danger {
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .btn-header.danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    /* TOP VIEW TABS (Terminal vs Real Estate vs History) */
+    .view-navigation-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      overflow-x: auto;
+    }
+
+    .nav-tab-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--gold-gradient);
+      color: #0f172a;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      font-weight: 800;
+    }
+
+    /* MAIN APP LAYOUT */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 960px) {
+      .dashboard-grid {
+        grid-template-columns: 390px 1fr;
+        align-items: start;
+      }
+    }
+
+    @media (min-width: 1140px) {
+      .dashboard-grid {
+        grid-template-columns: 420px 1fr;
+      }
+    }
+
+    /* SECTION CARDS */
+    .card-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* PLAYERS ROSTER */
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 540px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .player-list::-webkit-scrollbar,
+    .log-list::-webkit-scrollbar,
+    .statement-tx-list::-webkit-scrollbar,
+    .property-grid-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .player-list::-webkit-scrollbar-thumb,
+    .log-list::-webkit-scrollbar-thumb,
+    .statement-tx-list::-webkit-scrollbar-thumb,
+    .property-grid-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+
+    .player-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .player-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .player-item.selected {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+      border-color: #f59e0b;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
+    }
+
+    .player-item.selected::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--gold-gradient);
+    }
+
+    .player-avatar-wrap {
+      position: relative;
+    }
+
+    .player-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    .player-item.selected .player-avatar {
+      transform: scale(1.05);
+      border-color: #fbbf24;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .crown-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      font-size: 14px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    .player-details {
+      flex: 1;
+      margin-left: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .player-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .player-name-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .active-tag {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #f59e0b;
+      color: #0f172a;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .player-money-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #10b981;
+      letter-spacing: -0.3px;
+    }
+
+    .player-money-text.negative {
+      color: #ef4444;
+    }
+
+    .player-assets-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .player-assets-badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* Mini wealth progress bar */
+    .wealth-bar-container {
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      margin-top: 3px;
+      overflow: hidden;
+    }
+
+    .wealth-bar-fill {
+      height: 100%;
+      background: var(--gold-gradient);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .player-quick-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .btn-icon.history-btn {
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+    .btn-icon.history-btn:hover {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+    }
+
+    .btn-icon.delete:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .btn-add-new-player {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-add-new-player:hover {
+      border-color: #f59e0b;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.05);
+      transform: translateY(-1px);
+    }
+
+    /* RIGHT COLUMN: BANK TERMINAL & TOOLS */
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ACTIVE PLAYER HIGHLIGHT BANNER */
+    .active-player-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .active-player-banner::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .banner-avatar {
+      font-size: 32px;
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .banner-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .banner-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #fbbf24;
+    }
+
+    .banner-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .banner-balance-box {
+      text-align: right;
+    }
+
+    .banner-balance-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-secondary);
+    }
+
+    .banner-balance-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #34d399;
+      letter-spacing: -0.5px;
+    }
+
+    /* DIGITAL ATM / VAULT TERMINAL */
+    .terminal-box {
+      background: linear-gradient(180deg, rgba(20, 27, 45, 0.9) 0%, rgba(13, 18, 30, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    /* LED AMOUNT SCREEN */
+    .amount-display-screen {
+      background: #090d16;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.08);
+    }
+
+    .screen-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .amount-input-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 8px 0;
+    }
+
+    .currency-symbol {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: #fbbf24;
+      margin-right: 4px;
+    }
+
+    .amount-input-field {
+      background: transparent;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #ffffff;
+      text-align: center;
+      width: 100%;
+      max-width: 320px;
+      outline: none;
+      letter-spacing: 1px;
+    }
+
+    .amount-input-field::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* MONOPOLY CASH BILLS SELECTOR */
+    .bill-selector-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bill-selector-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bill-stack {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 520px) {
+      .bill-stack {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .bill-stack {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+
+    .bill-btn {
+      position: relative;
+      padding: 11px 4px;
+      border-radius: var(--radius-sm);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .bill-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+      filter: brightness(1.15);
+    }
+
+    .bill-btn:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    /* Monopolio Cash Bill & Rent Stack Colorway (Ascending: 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 900, 950, 1050) */
+    .bill-200  { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.4); color: #86efac; }
+    .bill-250  { background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.4); color: #67e8f9; }
+    .bill-300  { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #93c5fd; }
+    .bill-350  { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; }
+    .bill-400  { background: rgba(132, 204, 22, 0.15); border-color: rgba(132, 204, 22, 0.4); color: #bef264; }
+    .bill-450  { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #fde047; }
+    .bill-500  { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.4); color: #fcd34d; }
+    .bill-550  { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #fdba74; }
+    .bill-600  { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
+    .bill-650  { background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4); color: #f472b6; }
+    .bill-700  { background: rgba(217, 70, 239, 0.15); border-color: rgba(217, 70, 239, 0.4); color: #e879f9; }
+    .bill-900  { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc; }
+    .bill-950  { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.4); color: #a78bfa; }
+    .bill-1050 { background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(251, 191, 36, 0.25) 100%); border-color: #f59e0b; color: #fef08a; }
+
+    /* QUICK PRESET BUTTONS */
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 600px) {
+      .preset-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .btn-preset {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      padding: 10px 4px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      transition: all 0.15s;
+    }
+
+    .btn-preset:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-preset.go-highlight {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.35) 100%);
+      border-color: rgba(16, 185, 129, 0.55);
+      color: #6ee7b7;
+    }
+
+    .btn-preset.go-highlight:hover {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(5, 150, 105, 0.5) 100%);
+      box-shadow: var(--shadow-glow-emerald);
+    }
+
+    /* MAIN ACTIONS ROW */
+    .main-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 680px) {
+      .main-actions-grid {
+        grid-template-columns: 1.2fr 1.2fr 1.4fr;
+      }
+    }
+
+    .action-big-btn {
+      position: relative;
+      padding: 16px 12px;
+      border-radius: var(--radius-lg);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #ffffff;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .action-big-btn::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .action-big-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      filter: brightness(1.1);
+    }
+
+    .action-big-btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-collect {
+      background: var(--emerald-gradient);
+    }
+    .btn-collect:hover {
+      box-shadow: var(--shadow-glow-emerald);
+    }
+
+    .btn-deduct {
+      background: var(--crimson-gradient);
+    }
+    .btn-deduct:hover {
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-transfer-full {
+      grid-column: span 2;
+      background: var(--sapphire-gradient);
+    }
+    @media (min-width: 680px) {
+      .btn-transfer-full {
+        grid-column: span 1;
+      }
+    }
+    .btn-transfer-full:hover {
+      box-shadow: var(--shadow-glow-blue);
+    }
+
+    .action-btn-sub {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* SECONDARY CONTROLS */
+    .secondary-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      min-width: 120px;
+      padding: 13px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary.pass-go-btn {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+      border-color: rgba(245, 158, 11, 0.5);
+      color: #fef08a;
+      font-size: 14px;
+      flex: 2;
+    }
+
+    .btn-secondary.pass-go-btn:hover {
+      border-color: #f59e0b;
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* =========================================================
+       PROPERTIES & REAL ESTATE MARKET SECTION (27 Properties)
+       ========================================================= */
+    .property-super-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    .property-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .property-tabs-scroll {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .property-grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      max-height: 560px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .property-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .property-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .property-card.owned-by-active {
+      border-color: #fbbf24;
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .property-card-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .property-card-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .property-price-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #34d399;
+    }
+
+    .property-owner-status {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+    }
+
+    .property-owner-status.claimed {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fef08a;
+      font-weight: 700;
+    }
+
+    .property-actions-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .btn-buy-prop {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--emerald-gradient);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-buy-prop:hover {
+      filter: brightness(1.1);
+      transform: scale(1.02);
+    }
+
+    .btn-sell-prop {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sell-prop:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* =========================================================
+       COMPREHENSIVE GAME HISTORY & AUDIT LEDGER SECTION
+       ========================================================= */
+    .history-super-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    /* History Summary Bar (Metrics) */
+    .history-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .history-metrics-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .metric-value.green { color: #34d399; }
+    .metric-value.red { color: #f87171; }
+    .metric-value.blue { color: #60a5fa; }
+    .metric-value.gold { color: #fbbf24; }
+
+    /* Filter Controls Bar */
+    .history-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+    }
+
+    /* Player Filter Horizontal Tabs */
+    .player-filter-scroll {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .player-filter-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+    .player-filter-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+
+    .filter-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .filter-pill.active {
+      background: var(--gold-gradient);
+      border-color: #f59e0b;
+      color: #0f172a;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Type Filter Bar & Search */
+    .filter-sub-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .type-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .type-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .type-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .type-btn.active {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .history-search-input {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #ffffff;
+      outline: none;
+      min-width: 180px;
+    }
+    .history-search-input:focus {
+      border-color: #f59e0b;
+    }
+
+    /* TRANSACTION LIST ITEMS */
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 460px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .tx-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.15s;
+      position: relative;
+    }
+
+    .tx-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .tx-card.tx-collect {
+      border-left: 4px solid #10b981;
+    }
+    .tx-card.tx-deduct {
+      border-left: 4px solid #ef4444;
+    }
+    .tx-card.tx-transfer {
+      border-left: 4px solid #3b82f6;
+    }
+    .tx-card.tx-go {
+      border-left: 4px solid #f59e0b;
+    }
+    .tx-card.tx-property {
+      border-left: 4px solid #8b5cf6;
+    }
+    .tx-card.tx-neutral {
+      border-left: 4px solid #64748b;
+    }
+
+    .tx-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .tx-type-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .tx-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .tx-title {
+      font-size: 14px;
+      color: #f1f5f9;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .tx-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tx-tag {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.4px;
+    }
+    .tx-tag.collect { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .tx-tag.deduct { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .tx-tag.transfer { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .tx-tag.go { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .tx-tag.property { background: rgba(139, 92, 246, 0.2); color: #c084fc; }
+    .tx-tag.system { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; }
+
+    .tx-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .tx-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .tx-amount.pos { color: #34d399; }
+    .tx-amount.neg { color: #f87171; }
+    .tx-amount.trans { color: #60a5fa; }
+    .tx-amount.neutral { color: #94a3b8; }
+
+    .tx-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* =========================================================
+       PLAYER STATEMENT MODAL (Dedicated Player Ledger)
+       ========================================================= */
+    .statement-modal-card {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+
+    .statement-header {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .statement-player-hero {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .statement-avatar {
+      font-size: 34px;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .statement-player-title h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .statement-player-title p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .statement-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 14px 24px;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .statement-stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .statement-stat-box span {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .statement-stat-box strong {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .statement-tx-list {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .statement-footer {
+      padding: 12px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* MODAL BASE */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(5, 8, 16, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-container {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 440px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      transform: scale(0.95);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.active .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .btn-close-modal {
+      background: rgba(255, 255, 255, 0.07);
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .btn-close-modal:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    .styled-input {
+      background: #090d16;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .styled-input:focus {
+      border-color: #f59e0b;
+    }
+
+    /* TOKEN SELECTOR GRID */
+    .token-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .token-choice {
+      aspect-ratio: 1;
+      font-size: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .token-choice:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: scale(1.08);
+    }
+
+    .token-choice.active {
+      border-color: #fbbf24;
+      background: rgba(245, 158, 11, 0.2);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+      transform: scale(1.08);
+    }
+
+    /* TRANSFER SELECTION LIST */
+    .transfer-player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .transfer-player-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .transfer-player-card:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+    }
+
+    .transfer-player-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .transfer-preview-banner {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #93c5fd;
+    }
+
+    /* ASSIGN PROPERTY MODAL */
+    .property-assign-card {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 440px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* UTILITIES */
+    .gold-gradient-text {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="container">
+
+    <!-- TOP HEADER BAR -->
+    <header class="header-bar">
+      <div class="brand-section">
+        <div class="brand-icon">🎩</div>
+        <div class="brand-text">
+          <h1>MONOPOLIO BANK</h1>
+          <p>World Series With Adventure &bull; Digital Banker</p>
+        </div>
+      </div>
+
+      <div class="top-stats-row">
+        <div class="stat-pill">
+          <span>Total Vault:</span>
+          <strong id="stat-total-cash">$0</strong>
+        </div>
+        <div class="stat-pill">
+          <span>Properties Owned:</span>
+          <strong id="stat-props-claimed">0 / 27</strong>
+        </div>
+        <div class="stat-pill" id="leader-pill">
+          <span>Leader:</span>
+          <strong id="stat-leader">None</strong>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-header" id="btn-sound-toggle" onclick="toggleSound()">
+          <span id="sound-icon">🔊</span> Sounds: ON
+        </button>
+        <button class="btn-header danger" onclick="confirmResetGame()">
+          ↻ Reset
+        </button>
+      </div>
+    </header>
+
+    <!-- TOP SECTION NAVIGATION BAR -->
+    <nav class="view-navigation-bar">
+      <button class="nav-tab-btn active" id="tab-nav-terminal" onclick="switchViewTab('terminal')">
+        <span>🏧</span> Bank Terminal & Cashier
+      </button>
+      <button class="nav-tab-btn" id="tab-nav-properties" onclick="switchViewTab('properties')">
+        <span>🏰</span> Real Estate Board (27 Properties)
+      </button>
+      <button class="nav-tab-btn" id="tab-nav-history" onclick="switchViewTab('history')">
+        <span>📜</span> Master Vault Ledger
+      </button>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="dashboard-grid">
+
+      <!-- LEFT COLUMN: PLAYER ROSTER (Always visible for fast multi-tasking) -->
+      <section class="card-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>👥</span> Players Roster
+          </div>
+          <span style="font-size: 11px; font-weight: 700; color: #94a3b8;" id="roster-sub-count">3 in game</span>
+        </div>
+
+        <div class="player-list" id="player-list">
+          <!-- Rendered via JS -->
+        </div>
+
+        <button class="btn-add-new-player" onclick="openAddPlayerModal()">
+          <span>➕</span> Add New Player
+        </button>
+      </section>
+
+      <!-- RIGHT COLUMN: DYNAMIC VIEWPANEL -->
+      <div class="right-column">
+
+        <!-- VIEW 1: BANK TERMINAL -->
+        <div id="view-terminal" style="display: flex; flex-direction: column; gap: 18px;">
+
+          <!-- ACTIVE PLAYER HIGHLIGHT BANNER -->
+          <div class="active-player-banner" id="active-banner">
+            <div class="banner-left">
+              <div class="banner-avatar" id="banner-avatar">🎩</div>
+              <div class="banner-info">
+                <span class="banner-label">Active Transactor</span>
+                <span class="banner-name" id="banner-name">Player 1</span>
+              </div>
+            </div>
+            <div class="banner-balance-box">
+              <span class="banner-balance-label">Cash Balance</span>
+              <div class="banner-balance-val" id="banner-balance">$7,000</div>
+            </div>
+          </div>
+
+          <!-- BANK TERMINAL -->
+          <section class="terminal-box">
+
+            <!-- LED SCREEN AMOUNT INPUT -->
+            <div class="amount-display-screen">
+              <div class="screen-header">
+                <span>Transaction Amount</span>
+                <span id="screen-sub-hint">Tap note or enter value</span>
+              </div>
+              <div class="amount-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input 
+                  type="text" 
+                  id="amount-input" 
+                  class="amount-input-field" 
+                  placeholder="0" 
+                  inputmode="numeric" 
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <!-- MONOPOLIO CASH BILL & RENT TIER SELECTOR (Ascending Order) -->
+            <div class="bill-selector-wrap">
+              <div class="bill-selector-title">
+                <span>💵 Cash Bill Stack & Rent Tiers (Tap to Add)</span>
+                <span style="cursor:pointer; color:#fbbf24; font-weight:700;" onclick="clearAmount()">Clear Amount ($0)</span>
+              </div>
+              <div class="bill-stack">
+                <button class="bill-btn bill-200" onclick="addNoteValue(200)">
+                  <span>$200</span>
+                </button>
+                <button class="bill-btn bill-250" onclick="addNoteValue(250)">
+                  <span>$250</span>
+                </button>
+                <button class="bill-btn bill-300" onclick="addNoteValue(300)">
+                  <span>$300</span>
+                </button>
+                <button class="bill-btn bill-350" onclick="addNoteValue(350)">
+                  <span>$350</span>
+                </button>
+                <button class="bill-btn bill-400" onclick="addNoteValue(400)">
+                  <span>$400</span>
+                </button>
+                <button class="bill-btn bill-450" onclick="addNoteValue(450)">
+                  <span>$450</span>
+                </button>
+                <button class="bill-btn bill-500" onclick="addNoteValue(500)">
+                  <span>$500</span>
+                </button>
+                <button class="bill-btn bill-550" onclick="addNoteValue(550)">
+                  <span>$550</span>
+                </button>
+                <button class="bill-btn bill-600" onclick="addNoteValue(600)">
+                  <span>$600</span>
+                </button>
+                <button class="bill-btn bill-650" onclick="addNoteValue(650)">
+                  <span>$650</span>
+                </button>
+                <button class="bill-btn bill-700" onclick="addNoteValue(700)">
+                  <span>$700</span>
+                </button>
+                <button class="bill-btn bill-900" onclick="addNoteValue(900)">
+                  <span>$900</span>
+                </button>
+                <button class="bill-btn bill-950" onclick="addNoteValue(950)">
+                  <span>$950</span>
+                </button>
+                <button class="bill-btn bill-1050" onclick="addNoteValue(1050)">
+                  <span>$1,050</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- PRESETS GRID (Monopolio Rules: +$2,500 GO, $200 Tax/Fine, $7,000 Starting) -->
+            <div class="preset-grid">
+              <button class="btn-preset go-highlight" onclick="setExactAmount(2500)">
+                <strong>+$2,500</strong>
+                <span style="font-size:10px; opacity:0.85;">Pass GO</span>
+              </button>
+              <button class="btn-preset" onclick="setExactAmount(200)">
+                <strong>$200</strong>
+                <span style="font-size:10px; opacity:0.8;">Tax / Fine</span>
+              </button>
+              <button class="btn-preset" onclick="setExactAmount(500)">
+                <strong>$500</strong>
+                <span style="font-size:10px; opacity:0.75;">Rent</span>
+              </button>
+              <button class="btn-preset" onclick="setExactAmount(1000)">
+                <strong>$1,000</strong>
+                <span style="font-size:10px; opacity:0.75;">High Rent</span>
+              </button>
+              <button class="btn-preset" onclick="setExactAmount(2000)">
+                <strong>$2,000</strong>
+                <span style="font-size:10px; opacity:0.75;">Hotel Rent</span>
+              </button>
+              <button class="btn-preset" onclick="setExactAmount(7000)">
+                <strong>$7,000</strong>
+                <span style="font-size:10px; opacity:0.75;">Starting</span>
+              </button>
+            </div>
+
+            <!-- PRIMARY FINANCIAL OPERATIONS -->
+            <div class="main-actions-grid">
+              <button class="action-big-btn btn-collect" onclick="executeBankTransaction('collect')">
+                <span>+ COLLECT</span>
+                <span class="action-btn-sub">From Bank / Salary</span>
+              </button>
+
+              <button class="action-big-btn btn-deduct" onclick="executeBankTransaction('deduct')">
+                <span>- PAY BANK</span>
+                <span class="action-btn-sub">Taxes / Fine / Bank Fee</span>
+              </button>
+
+              <button class="action-big-btn btn-transfer-full" onclick="openTransferModal()">
+                <span>🔄 TRANSFER</span>
+                <span class="action-btn-sub">Pay Rent / Player Deal</span>
+              </button>
+            </div>
+
+            <!-- SECONDARY CONTROLS (PASS GO, CLEAR, UNDO) -->
+            <div class="secondary-controls">
+              <button class="btn-secondary pass-go-btn" onclick="instantPassGo()">
+                <span>⚡</span> Pass GO (+ $2,500)
+              </button>
+
+              <button class="btn-secondary" onclick="clearAmount()">
+                <span>🧹</span> Clear Input
+              </button>
+
+              <button class="btn-secondary" id="btn-undo-action" onclick="undoLastAction()">
+                <span>⤺</span> Undo
+              </button>
+            </div>
+
+          </section>
+        </div>
+
+        <!-- VIEW 2: REAL ESTATE & PROPERTIES MARKET (Direct from your board photo) -->
+        <div id="view-properties" style="display: none; flex-direction: column; gap: 18px;">
+          <section class="property-super-panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>🏰</span> Monopolio Properties Market (27 Real Estate Deeds)
+              </div>
+              <span style="font-size:12px; font-weight:700; color:#fbbf24;" id="prop-view-header-stats">
+                27 Properties on Board
+              </span>
+            </div>
+
+            <!-- Properties Filter Pills & Search -->
+            <div class="property-filter-bar">
+              <div class="property-tabs-scroll">
+                <button class="type-btn active" data-pfilter="all" onclick="setPropertyFilter('all')">All (27)</button>
+                <button class="type-btn" data-pfilter="available" onclick="setPropertyFilter('available')">🏛️ For Sale</button>
+                <button class="type-btn" data-pfilter="owned" onclick="setPropertyFilter('owned')">👑 Owned</button>
+                <button class="type-btn" data-pfilter="transport" onclick="setPropertyFilter('transport')">🚆 Transports (4)</button>
+                <button class="type-btn" data-pfilter="utility" onclick="setPropertyFilter('utility')">💡 Utilities (2)</button>
+                <button class="type-btn" data-pfilter="adventure" onclick="setPropertyFilter('adventure')">🗺️ Adventure (2)</button>
+              </div>
+
+              <input 
+                type="text" 
+                id="property-search-input" 
+                class="history-search-input" 
+                placeholder="🔍 Search country/property..." 
+                oninput="handlePropertySearch(this.value)"
+              />
+            </div>
+
+            <!-- Active Player Notice banner for buying -->
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:10px; padding:10px 14px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+              <span>Buying will assign property to Active Player: <strong id="prop-active-buyer-name" style="color:#fbbf24;">Player 1</strong> and reduce balance.</span>
+              <span style="color:#94a3b8;">Click any card to acquire</span>
+            </div>
+
+            <!-- 27 Properties Grid -->
+            <div class="property-grid-container" id="property-grid-container">
+              <!-- Rendered via JS -->
+            </div>
+          </section>
+        </div>
+
+        <!-- VIEW 3: COMPREHENSIVE TRANSACTION HISTORY (Vault Ledger) -->
+        <div id="view-history" style="display: none; flex-direction: column; gap: 18px;">
+          <section class="history-super-panel" id="history-section">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>📜</span> Master Vault Ledger &bull; Transaction History
+              </div>
+
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button class="btn-header" style="font-size:11px; padding:6px 10px;" onclick="copyHistoryToClipboard()">
+                  📋 Copy Ledger
+                </button>
+                <button class="btn-header" style="font-size:11px; padding:6px 10px;" onclick="exportHistoryCSV()">
+                  💾 Export CSV
+                </button>
+                <button class="btn-header danger" style="font-size:11px; padding:6px 10px;" onclick="clearLogs()">
+                  Clear All
+                </button>
+              </div>
+            </div>
+
+            <!-- Financial Metrics Summary Bar -->
+            <div class="history-metrics-row">
+              <div class="metric-card">
+                <span class="metric-label">Total Volume Moved</span>
+                <span class="metric-value gold" id="metric-volume">$0</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Total Bank Payouts</span>
+                <span class="metric-value green" id="metric-payouts">$0</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Total Bank Deductions</span>
+                <span class="metric-value red" id="metric-deductions">$0</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Total Rent / Transfers</span>
+                <span class="metric-value blue" id="metric-transfers">$0</span>
+              </div>
+            </div>
+
+            <!-- Interactive Filter Controls Bar -->
+            <div class="history-controls">
+              
+              <!-- Player Selector Filter Pills -->
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:11px; font-weight:800; color:#94a3b8; text-transform:uppercase;">
+                  Filter By Player:
+                </span>
+                <span style="font-size:11px; color:#fbbf24; font-weight:700;" id="history-active-player-name">
+                  Showing All Players
+                </span>
+              </div>
+
+              <div class="player-filter-scroll" id="history-player-filter-pills">
+                <!-- Rendered via JS -->
+              </div>
+
+              <!-- Category Filter & Search Input -->
+              <div class="filter-sub-bar">
+                <div class="type-filter-group">
+                  <button class="type-btn active" data-type="all" onclick="setTypeFilter('all')">All Types</button>
+                  <button class="type-btn" data-type="collect" onclick="setTypeFilter('collect')">💵 Collect</button>
+                  <button class="type-btn" data-type="deduct" onclick="setTypeFilter('deduct')">🏦 Pay Bank</button>
+                  <button class="type-btn" data-type="transfer" onclick="setTypeFilter('transfer')">🔄 Transfers</button>
+                  <button class="type-btn" data-type="property" onclick="setTypeFilter('property')">🏰 Properties</button>
+                  <button class="type-btn" data-type="go" onclick="setTypeFilter('go')">⚡ Pass GO</button>
+                </div>
+
+                <input 
+                  type="text" 
+                  id="history-search" 
+                  class="history-search-input" 
+                  placeholder="🔍 Search transactions..." 
+                  oninput="handleHistorySearch(this.value)"
+                />
+              </div>
+            </div>
+
+            <!-- Transaction List -->
+            <div class="log-list" id="log-list">
+              <!-- Rendered via JS -->
+            </div>
+
+          </section>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROPERTY DETAIL / ASSIGNMENT MODAL -->
+  <div class="modal-backdrop" id="property-modal">
+    <div class="property-assign-card">
+      <div class="modal-header">
+        <h3 id="prop-modal-name">Property Name</h3>
+        <button class="btn-close-modal" onclick="closePropertyModal()">✕</button>
+      </div>
+
+      <div id="prop-modal-card-preview" style="border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.15);">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Assign Ownership To:</label>
+        <select id="prop-modal-player-select" class="styled-input" style="cursor:pointer;">
+          <!-- Rendered via JS -->
+        </select>
+      </div>
+
+      <div style="font-size:12px; color:#cbd5e1; line-height:1.4;" id="prop-modal-warning">
+        Assigning this property will instantly deduct the purchase price from the selected player's bank account.
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:6px;">
+        <button class="btn-secondary" style="flex:1;" onclick="closePropertyModal()">Cancel</button>
+        <button class="action-big-btn btn-collect" style="flex:1; padding:12px;" id="prop-modal-action-btn" onclick="confirmPropertyAssignment()">
+          <span>Confirm Buy</span>
+        </button>
+      </div>
+
+      <!-- If already owned: options to mortgage or return to bank -->
+      <div id="prop-modal-owned-actions" style="display:none; flex-direction:column; gap:8px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px;">
+        <button class="btn-sell-prop" style="padding:10px;" onclick="sellPropertyToBank()">
+          🏦 Sell / Return to Bank (Refund Cash to Owner)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYER ACCOUNT STATEMENT MODAL (Per-Player History & Real Estate) -->
+  <div class="modal-backdrop" id="statement-modal">
+    <div class="statement-modal-card">
+      <div class="statement-header">
+        <div class="statement-player-hero">
+          <div class="statement-avatar" id="stmt-avatar">🎩</div>
+          <div class="statement-player-title">
+            <h3 id="stmt-name">Player 1</h3>
+            <p id="stmt-balance-sub">Current Balance: $7,000</p>
+          </div>
+        </div>
+        <button class="btn-close-modal" onclick="closeStatementModal()">✕</button>
+      </div>
+
+      <!-- Player Financial Overview -->
+      <div class="statement-stats-grid">
+        <div class="statement-stat-box">
+          <span>Cash Balance</span>
+          <strong style="color:#34d399;" id="stmt-cash">$7,000</strong>
+        </div>
+        <div class="statement-stat-box">
+          <span>Real Estate Value</span>
+          <strong style="color:#60a5fa;" id="stmt-props-val">$0</strong>
+        </div>
+        <div class="statement-stat-box">
+          <span>Total Net Worth</span>
+          <strong id="stmt-networth" style="color:#fbbf24;">$7,000</strong>
+        </div>
+      </div>
+
+      <!-- Player's Owned Properties Strip -->
+      <div style="padding:12px 24px; background:rgba(15,23,42,0.5); border-bottom:1px solid rgba(255,255,255,0.06);">
+        <span style="font-size:11px; font-weight:800; text-transform:uppercase; color:#94a3b8; display:block; margin-bottom:6px;">
+          Owned Real Estate Portfolio:
+        </span>
+        <div id="stmt-player-property-chips" style="display:flex; flex-wrap:wrap; gap:6px;">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Player's Chronological Ledger -->
+      <div class="statement-tx-list" id="statement-tx-list">
+        <!-- Rendered via JS -->
+      </div>
+
+      <div class="statement-footer">
+        <span style="font-size:12px; color:#94a3b8;" id="stmt-count-label">0 transactions</span>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-header" style="font-size:11px;" onclick="viewInMainLedger()">
+            View in Master Ledger &rarr;
+          </button>
+          <button class="btn-secondary" style="padding:6px 12px; font-size:12px;" onclick="closeStatementModal()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYER MODAL (ADD / EDIT) -->
+  <div class="modal-backdrop" id="player-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="player-modal-title">Add New Player</h3>
+        <button class="btn-close-modal" onclick="closePlayerModal()">✕</button>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Player Name</label>
+        <input type="text" id="player-modal-name" class="styled-input" placeholder="e.g. Monopoly King" maxlength="24" />
+      </div>
+
+      <div class="input-group" id="starting-balance-group">
+        <label class="input-label">Starting Cash ($)</label>
+        <input type="number" id="player-modal-balance" class="styled-input" placeholder="7000" value="7000" min="0" />
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Choose Game Token</label>
+        <div class="token-choice-grid" id="token-choice-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn-secondary" style="flex:1;" onclick="closePlayerModal()">Cancel</button>
+        <button class="action-big-btn btn-collect" style="flex:1; padding:12px;" onclick="savePlayerFromModal()">
+          <span>Save Player</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFER MODAL -->
+  <div class="modal-backdrop" id="transfer-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Transfer Cash</h3>
+        <button class="btn-close-modal" onclick="closeTransferModal()">✕</button>
+      </div>
+
+      <div class="transfer-preview-banner" id="transfer-amount-preview">
+        Transferring <strong>$0</strong> from <strong>Active Player</strong>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Select Recipient Player</label>
+        <div class="transfer-player-list" id="transfer-player-list">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <button class="btn-secondary" style="width:100%;" onclick="closeTransferModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- CONFIRM RESET MODAL -->
+  <div class="modal-backdrop" id="reset-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Reset Game?</h3>
+        <button class="btn-close-modal" onclick="closeResetModal()">✕</button>
+      </div>
+
+      <p style="color:#cbd5e1; font-size:14px; line-height:1.5;">
+        Choose whether you want to reset all existing player balances back to standard starting bankroll of $7,000 and return all properties to the bank, or completely wipe all players and start brand new.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button class="action-big-btn btn-collect" style="padding:14px;" onclick="executeReset(false)">
+          <span>Reset Balances to $7,000</span>
+          <span class="action-btn-sub">Keep existing players, free properties</span>
+        </button>
+        <button class="action-big-btn btn-deduct" style="padding:14px;" onclick="executeReset(true)">
+          <span>Full Wipe (New Game)</span>
+          <span class="action-btn-sub">Erase all players, deeds & logs</span>
+        </button>
+        <button class="btn-secondary" style="margin-top:4px;" onclick="closeResetModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-pill" id="toast">
+    <span id="toast-icon">✨</span>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIZER (Web Audio API - Pure Offline Vanilla)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = localStorage.getItem('monopoly_sound_enabled') !== 'false';
+      }
+
+      initCtx() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playCashChime() {
+        if (!this.enabled) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [987.77, 1318.51, 1567.98];
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+
+          gain.gain.setValueAtTime(0, now + i * 0.08);
+          gain.gain.linearRampToValueAtTime(0.25, now + i * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.4);
+        });
+      }
+
+      playDeduct() {
+        if (!this.enabled) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(160, now + 0.2);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      }
+
+      playTransfer() {
+        if (!this.enabled) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const freqs = [440, 554.37, 659.25];
+        freqs.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+
+          gain.gain.setValueAtTime(0.2, now + idx * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.3);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.05);
+          osc.stop(now + idx * 0.05 + 0.32);
+        });
+      }
+
+      playClick() {
+        if (!this.enabled) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    function toggleSound() {
+      sound.enabled = !sound.enabled;
+      localStorage.setItem('monopoly_sound_enabled', sound.enabled ? 'true' : 'false');
+      updateSoundButton();
+      if (sound.enabled) sound.playClick();
+    }
+
+    function updateSoundButton() {
+      const btn = document.getElementById("btn-sound-toggle");
+      const icon = document.getElementById("sound-icon");
+      if (sound.enabled) {
+        icon.innerText = "🔊";
+        btn.innerHTML = `<span id="sound-icon">🔊</span> Sounds: ON`;
+      } else {
+        icon.innerText = "🔇";
+        btn.innerHTML = `<span id="sound-icon">🔇</span> Sounds: OFF`;
+      }
+    }
+
+    /* =========================================================
+       CANVAS CONFETTI GENERATOR (Pure Vanilla, High-Perf)
+       ========================================================= */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let confettiPieces = [];
+    let confettiAnimId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti() {
+      const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#fbbf24', '#ffffff'];
+      confettiPieces = [];
+      for (let i = 0; i < 90; i++) {
+        confettiPieces.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+          y: canvas.height * 0.4,
+          w: Math.random() * 10 + 6,
+          h: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 16,
+          vy: Math.random() * -12 - 4,
+          gravity: 0.38,
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 18,
+          opacity: 1
+        });
+      }
+
+      if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+      animateConfetti();
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+
+      confettiPieces.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.rotation += p.rotationSpeed;
+        p.vx *= 0.98;
+
+        if (p.y > canvas.height - 20) {
+          p.opacity -= 0.03;
+        }
+
+        if (p.opacity > 0) {
+          alive = true;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        }
+      });
+
+      if (alive) {
+        confettiAnimId = requestAnimationFrame(animateConfetti);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    /* =========================================================
+       BOARD DATA: EXACT 27 PROPERTIES FROM USER PHOTO
+       ========================================================= */
+    const ALL_PROPERTIES_DATA = [
+      // Right Side (Brown / Orange)
+      { id: "p_dubai", name: "Dubai", group: "brown", groupName: "Brown", color: "#b45309", price: 1000, icon: "🏙️", ownerId: null },
+      { id: "p_railways", name: "Railways", group: "transport", groupName: "Transport", color: "#64748b", price: 9500, icon: "🚆", ownerId: null },
+      // Right Side (Cyan / Light Blue)
+      { id: "p_sri_lanka", name: "Sri Lanka", group: "cyan", groupName: "Light Blue", color: "#06b6d4", price: 3000, icon: "🏝️", ownerId: null },
+      { id: "p_bangladesh", name: "Bangladesh", group: "cyan", groupName: "Light Blue", color: "#06b6d4", price: 2000, icon: "🏛️", ownerId: null },
+      { id: "p_water_works", name: "Water Works", group: "utility", groupName: "Utility", color: "#eab308", price: 3200, icon: "🚰", ownerId: null },
+      { id: "p_japan", name: "Japan", group: "cyan", groupName: "Light Blue", color: "#06b6d4", price: 4000, icon: "⛩️", ownerId: null },
+      // Corner: Adventure Short-Cut
+      { id: "p_new_zealand", name: "New Zealand", group: "adventure", groupName: "Adventure", color: "#f59e0b", price: 4500, icon: "🥝", ownerId: null },
+      // Bottom Side (Magenta / Purple)
+      { id: "p_germany", name: "Germany", group: "magenta", groupName: "Magenta", color: "#d946ef", price: 6000, icon: "🏰", ownerId: null },
+      { id: "p_france", name: "France", group: "magenta", groupName: "Magenta", color: "#d946ef", price: 5000, icon: "🗼", ownerId: null },
+      { id: "p_solar_energy", name: "Solar Energy", group: "utility", groupName: "Utility", color: "#eab308", price: 2500, icon: "💡", ownerId: null },
+      // Bottom Side (Light Green)
+      { id: "p_spain", name: "Spain", group: "lightgreen", groupName: "Light Green", color: "#22c55e", price: 4000, icon: "🏖️", ownerId: null },
+      { id: "p_egypt", name: "Egypt", group: "lightgreen", groupName: "Light Green", color: "#22c55e", price: 3500, icon: "🏜️", ownerId: null },
+      { id: "p_roadways", name: "Roadways", group: "transport", groupName: "Transport", color: "#64748b", price: 6500, icon: "🚌", ownerId: null },
+      { id: "p_switzerland", name: "Switzerland", group: "lightgreen", groupName: "Light Green", color: "#22c55e", price: 3500, icon: "🏔️", ownerId: null },
+      // Left Side (Amber / Orange)
+      { id: "p_china", name: "China", group: "orange", groupName: "Orange", color: "#f97316", price: 4500, icon: "🏯", ownerId: null },
+      { id: "p_singapore", name: "Singapore", group: "orange", groupName: "Orange", color: "#f97316", price: 3000, icon: "🦁", ownerId: null },
+      { id: "p_hong_kong", name: "Hong Kong", group: "orange", groupName: "Orange", color: "#f97316", price: 3500, icon: "🌆", ownerId: null },
+      { id: "p_italy", name: "Italy", group: "orange", groupName: "Orange", color: "#f97316", price: 3000, icon: "🍕", ownerId: null },
+      { id: "p_airways", name: "Airways", group: "transport", groupName: "Transport", color: "#64748b", price: 10500, icon: "✈️", ownerId: null },
+      { id: "p_south_africa", name: "South Africa", group: "limegreen", groupName: "Lime Green", color: "#84cc16", price: 4500, icon: "🇿🇦", ownerId: null },
+      // Corner: Adventure Short-Cut
+      { id: "p_australia", name: "Australia", group: "adventure", groupName: "Adventure", color: "#f59e0b", price: 5000, icon: "🦘", ownerId: null },
+      // Top Side (Red / Crimson)
+      { id: "p_russia", name: "Russia", group: "red", groupName: "Red", color: "#ef4444", price: 5500, icon: "🪆", ownerId: null },
+      { id: "p_canada", name: "Canada", group: "red", groupName: "Red", color: "#ef4444", price: 4000, icon: "🍁", ownerId: null },
+      // Top Side (Deep Blue / Navy)
+      { id: "p_london", name: "London", group: "navy", groupName: "Deep Blue", color: "#2563eb", price: 7000, icon: "🕰️", ownerId: null },
+      { id: "p_india", name: "India", group: "navy", groupName: "Deep Blue", color: "#2563eb", price: 6500, icon: "🕌", ownerId: null },
+      { id: "p_waterways", name: "Waterways", group: "transport", groupName: "Transport", color: "#64748b", price: 5500, icon: "🚢", ownerId: null },
+      { id: "p_usa", name: "USA", group: "navy", groupName: "Deep Blue", color: "#2563eb", price: 9000, icon: "🗽", ownerId: null }
+    ];
+
+    /* =========================================================
+       GAME STATE MANAGEMENT
+       ========================================================= */
+    const ALL_TOKENS = [
+      "🎩", "🚗", "🐕", "🚢", "🐱", "🦖", "🐧", "✈️", 
+      "💰", "💎", "🏰", "👑", "🚀", "⚡", "🐎", "🦁"
+    ];
+
+    const DEFAULT_PLAYERS = () => [
+      { id: 1, name: "Player 1", avatar: "🎩", balance: 7000 },
+      { id: 2, name: "Player 2", avatar: "🚗", balance: 7000 },
+      { id: 3, name: "Player 3", avatar: "🐕", balance: 7000 }
+    ];
+
+    let state = {
+      selectedId: 1,
+      players: DEFAULT_PLAYERS(),
+      properties: JSON.parse(JSON.stringify(ALL_PROPERTIES_DATA)),
+      logs: []
+    };
+
+    let historyStack = [];
+    let editingPlayerId = null;
+    let selectedTokenInModal = ALL_TOKENS[0];
+
+    // Navigation and Filter states
+    let currentViewTab = "terminal"; // "terminal", "properties", "history"
+    let activePlayerFilter = "all"; // for ledger
+    let activeTypeFilter = "all"; // for ledger
+    let activeSearchQuery = ""; // for ledger
+    let activePropertyFilter = "all"; // "all", "available", "owned", "transport", "utility", "adventure"
+    let propertySearchQuery = "";
+    let selectedPropertyToAssign = null;
+    let viewingStatementPlayerId = null;
+
+    // Load from localStorage (v5 with properties)
+    const STORAGE_KEY = 'monopolio_bank_v5';
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        state = JSON.parse(saved);
+        if (!Array.isArray(state.logs)) state.logs = [];
+        if (!Array.isArray(state.properties) || state.properties.length !== ALL_PROPERTIES_DATA.length) {
+          state.properties = JSON.parse(JSON.stringify(ALL_PROPERTIES_DATA));
+        }
+        if (Array.isArray(state.players)) {
+          state.players.forEach(p => {
+            if (typeof p.balance === 'number' && p.balance < 0) p.balance = 0;
+          });
+        }
+      } catch (e) {
+        console.error("State parse error:", e);
+      }
+    } else {
+      state.properties = JSON.parse(JSON.stringify(ALL_PROPERTIES_DATA));
+      recordTransaction({
+        type: "neutral",
+        title: "Monopolio Game Initialized",
+        desc: "Each player started with standard bankroll of $7,000. All 27 properties open in Bank vault.",
+        amount: 0,
+        actorId: null
+      }, false);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getTimeString() {
+      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function saveState(recordHistory = true) {
+      if (recordHistory) {
+        historyStack.push(JSON.stringify(state));
+        if (historyStack.length > 35) historyStack.shift();
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      render();
+    }
+
+    /* Structured Transaction Recorder */
+    function recordTransaction(data, saveNow = true) {
+      const entry = {
+        id: "tx_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+        time: getTimeString(),
+        timestamp: Date.now(),
+        type: data.type || "neutral", // "collect", "deduct", "transfer", "go", "property", "neutral"
+        title: data.title || "",
+        desc: data.desc || "",
+        amount: data.amount || 0,
+        actorId: data.actorId !== undefined ? data.actorId : null,
+        actorName: data.actorName || "",
+        actorAvatar: data.actorAvatar || "",
+        receiverId: data.receiverId !== undefined ? data.receiverId : null,
+        receiverName: data.receiverName || "",
+        receiverAvatar: data.receiverAvatar || "",
+        balanceAfter: data.balanceAfter !== undefined ? data.balanceAfter : null
+      };
+
+      state.logs.unshift(entry);
+      if (state.logs.length > 300) state.logs.pop();
+
+      if (saveNow) {
+        saveState(false);
+      }
+    }
+
+    function showToast(icon, msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toast-icon").innerText = icon;
+      document.getElementById("toast-msg").innerHTML = msg;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    /* =========================================================
+       VIEW TABS SWITCHER
+       ========================================================= */
+    function switchViewTab(tab) {
+      sound.playClick();
+      currentViewTab = tab;
+      
+      document.querySelectorAll(".nav-tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(`tab-nav-${tab}`).classList.add("active");
+
+      document.getElementById("view-terminal").style.display = tab === 'terminal' ? 'flex' : 'none';
+      document.getElementById("view-properties").style.display = tab === 'properties' ? 'flex' : 'none';
+      document.getElementById("view-history").style.display = tab === 'history' ? 'flex' : 'none';
+
+      if (tab === 'properties') renderPropertiesMarket();
+      if (tab === 'history') renderMasterHistory();
+    }
+
+    /* =========================================================
+       RENDER CORE
+       ========================================================= */
+    function render() {
+      // 1. Validate active selected player
+      let active = state.players.find(p => p.id === state.selectedId);
+      if (!active && state.players.length > 0) {
+        state.selectedId = state.players[0].id;
+        active = state.players[0];
+      }
+
+      // 2. Stats & Net Worth calculation
+      const totalVault = state.players.reduce((sum, p) => sum + Math.max(0, p.balance), 0);
+      document.getElementById("stat-total-cash").innerText = `$${totalVault.toLocaleString()}`;
+      document.getElementById("roster-sub-count").innerText = `${state.players.length} Players`;
+
+      const claimedCount = state.properties.filter(p => p.ownerId !== null).length;
+      document.getElementById("stat-props-claimed").innerText = `${claimedCount} / ${state.properties.length}`;
+
+      // Calculate player net worths (Cash + Real Estate value)
+      const playerNetWorths = state.players.map(p => {
+        const ownedProps = state.properties.filter(prop => prop.ownerId === p.id);
+        const propValue = ownedProps.reduce((sum, prop) => sum + prop.price, 0);
+        return {
+          ...p,
+          propCount: ownedProps.length,
+          propValue,
+          netWorth: p.balance + propValue
+        };
+      });
+
+      let richest = null;
+      if (playerNetWorths.length > 0) {
+        richest = [...playerNetWorths].sort((a, b) => b.netWorth - a.netWorth)[0];
+      }
+      if (richest && richest.netWorth > 0) {
+        document.getElementById("stat-leader").innerHTML = `${richest.avatar} ${richest.name} ($${richest.netWorth.toLocaleString()})`;
+      } else {
+        document.getElementById("stat-leader").innerText = "None";
+      }
+
+      // 3. Render Player List
+      const playerListEl = document.getElementById("player-list");
+      playerListEl.innerHTML = "";
+
+      playerNetWorths.forEach(p => {
+        const isSel = active && p.id === active.id;
+        const isLeader = richest && p.id === richest.id && p.netWorth > 0;
+        const sharePct = totalVault > 0 ? Math.max(2, Math.min(100, (p.balance / totalVault) * 100)) : 0;
+
+        const row = document.createElement("div");
+        row.className = `player-item ${isSel ? 'selected' : ''}`;
+        row.onclick = () => {
+          sound.playClick();
+          state.selectedId = p.id;
+          saveState(false);
+        };
+
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; flex:1; min-width:0;">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar">${p.avatar}</div>
+              ${isLeader ? `<div class="crown-badge" title="Wealthiest Player (Cash + Properties)">👑</div>` : ''}
+            </div>
+
+            <div class="player-details">
+              <div class="player-name-row">
+                <span class="player-name-text">${escapeHtml(p.name)}</span>
+                ${isSel ? `<span class="active-tag">Active</span>` : ''}
+              </div>
+              <div class="player-money-text ${p.balance < 0 ? 'negative' : ''}">
+                $${p.balance.toLocaleString()}
+              </div>
+              <div class="player-assets-sub">
+                <span class="player-assets-badge">🏰 ${p.propCount}</span>
+                <span>Net: <strong>$${p.netWorth.toLocaleString()}</strong></span>
+              </div>
+              <div class="wealth-bar-container" title="${sharePct.toFixed(1)}% of total vault cash">
+                <div class="wealth-bar-fill" style="width: ${sharePct}%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="player-quick-actions" onclick="event.stopPropagation()">
+            <button class="btn-icon history-btn" title="View Player Statement & Real Estate" onclick="openPlayerStatement(${p.id})">📜</button>
+            <button class="btn-icon" title="Pass GO (+ $2,500)" onclick="quickPlayerGo(${p.id})">⚡</button>
+            <button class="btn-icon" title="Edit player" onclick="openEditPlayerModal(${p.id})">✏️</button>
+            <button class="btn-icon delete" title="Remove player" onclick="deletePlayer(${p.id})">✕</button>
+          </div>
+        `;
+        playerListEl.appendChild(row);
+      });
+
+      // 4. Update Active Player Banner
+      const bannerAvatar = document.getElementById("banner-avatar");
+      const bannerName = document.getElementById("banner-name");
+      const bannerBalance = document.getElementById("banner-balance");
+
+      if (active) {
+        bannerAvatar.innerText = active.avatar;
+        bannerName.innerText = active.name;
+        bannerBalance.innerText = `$${active.balance.toLocaleString()}`;
+        bannerBalance.className = `banner-balance-val ${active.balance < 0 ? 'negative' : ''}`;
+        document.getElementById("prop-active-buyer-name").innerHTML = `${active.avatar} ${escapeHtml(active.name)}`;
+      } else {
+        bannerAvatar.innerText = "❌";
+        bannerName.innerText = "No Player Selected";
+        bannerBalance.innerText = "$0";
+        document.getElementById("prop-active-buyer-name").innerText = "None (Select a Player)";
+      }
+
+      // 5. Update Undo button
+      document.getElementById("btn-undo-action").disabled = historyStack.length === 0;
+
+      // 6. Refresh views
+      renderPropertiesMarket();
+      renderMasterHistory();
+      if (viewingStatementPlayerId) {
+        updateStatementModalContent(viewingStatementPlayerId);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    /* =========================================================
+       PROPERTIES MARKETPLACE LOGIC & RENDER
+       ========================================================= */
+    function renderPropertiesMarket() {
+      const container = document.getElementById("property-grid-container");
+      if (!container) return;
+
+      const active = state.players.find(p => p.id === state.selectedId);
+
+      const filtered = state.properties.filter(prop => {
+        // Group / Category filter
+        if (activePropertyFilter === 'available' && prop.ownerId !== null) return false;
+        if (activePropertyFilter === 'owned' && prop.ownerId === null) return false;
+        if (activePropertyFilter === 'transport' && prop.group !== 'transport') return false;
+        if (activePropertyFilter === 'utility' && prop.group !== 'utility') return false;
+        if (activePropertyFilter === 'adventure' && prop.group !== 'adventure') return false;
+
+        // Search query
+        if (propertySearchQuery) {
+          const q = propertySearchQuery.toLowerCase();
+          const matchName = prop.name.toLowerCase().includes(q);
+          const matchPrice = prop.price.toString().includes(q);
+          const matchGroup = (prop.groupName || "").toLowerCase().includes(q);
+          const owner = prop.ownerId ? state.players.find(x => x.id === prop.ownerId) : null;
+          const matchOwner = owner ? owner.name.toLowerCase().includes(q) : false;
+          if (!matchName && !matchPrice && !matchGroup && !matchOwner) return false;
+        }
+
+        return true;
+      });
+
+      const claimedCount = state.properties.filter(p => p.ownerId !== null).length;
+      document.getElementById("prop-view-header-stats").innerText = `${claimedCount} Claimed &bull; ${state.properties.length - claimedCount} Available`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding:36px; color:var(--text-muted); font-size:14px;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">🔍</span>
+            No matching properties found.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(prop => {
+        const owner = prop.ownerId ? state.players.find(p => p.id === prop.ownerId) : null;
+        const isOwnedByActive = active && prop.ownerId === active.id;
+
+        return `
+          <div class="property-card ${isOwnedByActive ? 'owned-by-active' : ''}">
+            <div class="property-card-header" style="background: ${prop.color};">
+              <span>${prop.icon} ${escapeHtml(prop.name)}</span>
+              <span style="font-size:11px; opacity:0.9;">${prop.groupName}</span>
+            </div>
+
+            <div class="property-card-body">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="property-price-tag">$${prop.price.toLocaleString()}</span>
+                <span style="font-size:11px; color:#94a3b8; font-weight:700;">Purchase Price</span>
+              </div>
+
+              <div class="property-owner-status ${owner ? 'claimed' : ''}">
+                ${owner 
+                  ? `<span>👑 Owned by <strong>${owner.avatar} ${escapeHtml(owner.name)}</strong></span>` 
+                  : `<span>🏛️ <strong>Bank Vault</strong> (Unowned)</span>`
+                }
+              </div>
+
+              <div class="property-actions-row">
+                ${!owner ? `
+                  <button class="btn-buy-prop" onclick="buyPropertyQuick('${prop.id}')">
+                    <span>➕ Buy ($${prop.price.toLocaleString()})</span>
+                  </button>
+                  <button class="btn-header" style="font-size:11px; padding:6px;" onclick="openPropertyModal('${prop.id}')" title="Assign to specific player">
+                    ⚙️
+                  </button>
+                ` : `
+                  <button class="btn-sell-prop" onclick="openPropertyModal('${prop.id}')">
+                    <span>Manage Deed &rarr;</span>
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function setPropertyFilter(filterKey) {
+      sound.playClick();
+      activePropertyFilter = filterKey;
+      document.querySelectorAll(".property-tabs-scroll .type-btn").forEach(btn => {
+        if (btn.getAttribute("data-pfilter") === filterKey) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+      renderPropertiesMarket();
+    }
+
+    function handlePropertySearch(val) {
+      propertySearchQuery = (val || "").trim();
+      renderPropertiesMarket();
+    }
+
+    /* Fast Buy Property for Active Player */
+    function buyPropertyQuick(propId) {
+      const active = state.players.find(p => p.id === state.selectedId);
+      if (!active) {
+        showToast("⚠️", "Please select a player to buy this property.");
+        return;
+      }
+
+      const prop = state.properties.find(p => p.id === propId);
+      if (!prop) return;
+
+      if (prop.ownerId !== null) {
+        showToast("⚠️", "This property is already owned.");
+        return;
+      }
+
+      assignPropertyToPlayer(prop, active);
+    }
+
+    function assignPropertyToPlayer(prop, player) {
+      if (player.balance < prop.price) {
+        sound.playDeduct();
+        showToast("⚠️", `Insufficient balance! ${player.name} only has $${player.balance.toLocaleString()} (Needs $${prop.price.toLocaleString()}). Balance cannot be negative.`);
+        return;
+      }
+
+      saveState(true);
+
+      // Reduce player account balance by property price (guaranteed non-negative)
+      player.balance = Math.max(0, player.balance - prop.price);
+      prop.ownerId = player.id;
+
+      sound.playCashChime();
+      triggerConfetti();
+
+      recordTransaction({
+        type: "property",
+        title: `${player.avatar} ${player.name} bought ${prop.icon} ${prop.name}`,
+        desc: `Acquired deed for $${prop.price.toLocaleString()} from Bank. Balance deducted.`,
+        amount: prop.price,
+        actorId: player.id,
+        actorName: player.name,
+        actorAvatar: player.avatar,
+        balanceAfter: player.balance
+      });
+
+      showToast("🏰", `${player.name} acquired ${prop.name} for $${prop.price.toLocaleString()}!`);
+      saveState(false);
+    }
+
+    /* Property Detail / Management Modal */
+    function openPropertyModal(propId) {
+      const prop = state.properties.find(p => p.id === propId);
+      if (!prop) return;
+
+      selectedPropertyToAssign = prop;
+
+      document.getElementById("prop-modal-name").innerText = `${prop.icon} ${prop.name}`;
+
+      const preview = document.getElementById("prop-modal-card-preview");
+      preview.innerHTML = `
+        <div style="background:${prop.color}; color:#fff; padding:12px; font-weight:800; font-size:16px; display:flex; justify-content:space-between;">
+          <span>${prop.icon} ${prop.name}</span>
+          <span>$${prop.price.toLocaleString()}</span>
+        </div>
+        <div style="background:#1f2937; padding:12px; font-size:13px; color:#cbd5e1;">
+          Group: <strong>${prop.groupName}</strong> &bull; Purchase Price: <strong style="color:#34d399;">$${prop.price.toLocaleString()}</strong>
+        </div>
+      `;
+
+      const select = document.getElementById("prop-modal-player-select");
+      select.innerHTML = "";
+
+      state.players.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.innerText = `${p.avatar} ${p.name} (Balance: $${p.balance.toLocaleString()})`;
+        if (prop.ownerId === p.id) {
+          opt.selected = true;
+        } else if (!prop.ownerId && p.id === state.selectedId) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+
+      const ownedActions = document.getElementById("prop-modal-owned-actions");
+      const actionBtn = document.getElementById("prop-modal-action-btn");
+
+      if (prop.ownerId !== null) {
+        ownedActions.style.display = "flex";
+        actionBtn.innerHTML = `<span>Reassign Deed</span>`;
+      } else {
+        ownedActions.style.display = "none";
+        actionBtn.innerHTML = `<span>Confirm Purchase</span>`;
+      }
+
+      document.getElementById("property-modal").classList.add("active");
+    }
+
+    function closePropertyModal() {
+      selectedPropertyToAssign = null;
+      document.getElementById("property-modal").classList.remove("active");
+    }
+
+    function confirmPropertyAssignment() {
+      if (!selectedPropertyToAssign) return;
+
+      const select = document.getElementById("prop-modal-player-select");
+      const targetPlayerId = parseInt(select.value, 10);
+      const targetPlayer = state.players.find(p => p.id === targetPlayerId);
+
+      if (!targetPlayer) return;
+
+      // If already owned by same player, just close
+      if (selectedPropertyToAssign.ownerId === targetPlayer.id) {
+        closePropertyModal();
+        return;
+      }
+
+      // If currently owned by another player, transfer ownership
+      if (selectedPropertyToAssign.ownerId !== null) {
+        const prevOwner = state.players.find(p => p.id === selectedPropertyToAssign.ownerId);
+        saveState(true);
+        selectedPropertyToAssign.ownerId = targetPlayer.id;
+
+        recordTransaction({
+          type: "property",
+          title: `Deed transferred: ${selectedPropertyToAssign.icon} ${selectedPropertyToAssign.name}`,
+          desc: `Transferred from ${prevOwner ? prevOwner.name : 'Unknown'} to ${targetPlayer.avatar} ${targetPlayer.name}`,
+          amount: selectedPropertyToAssign.price,
+          actorId: targetPlayer.id,
+          actorName: targetPlayer.name,
+          actorAvatar: targetPlayer.avatar
+        });
+
+        sound.playTransfer();
+        showToast("🔄", `${selectedPropertyToAssign.name} reassigned to ${targetPlayer.name}`);
+        closePropertyModal();
+        saveState(false);
+        return;
+      }
+
+      // Normal new purchase from Bank: deduct balance!
+      closePropertyModal();
+      assignPropertyToPlayer(selectedPropertyToAssign, targetPlayer);
+    }
+
+    function sellPropertyToBank() {
+      if (!selectedPropertyToAssign || selectedPropertyToAssign.ownerId === null) return;
+
+      const owner = state.players.find(p => p.id === selectedPropertyToAssign.ownerId);
+      if (!confirm(`Return ${selectedPropertyToAssign.name} to the Bank and refund $${selectedPropertyToAssign.price.toLocaleString()} to ${owner ? owner.name : 'owner'}?`)) {
+        return;
+      }
+
+      saveState(true);
+
+      const refundAmount = selectedPropertyToAssign.price;
+      if (owner) {
+        owner.balance += refundAmount;
+      }
+      const propName = selectedPropertyToAssign.name;
+      const propIcon = selectedPropertyToAssign.icon;
+      selectedPropertyToAssign.ownerId = null;
+
+      sound.playCashChime();
+
+      recordTransaction({
+        type: "property",
+        title: `${owner ? owner.avatar + ' ' + owner.name : 'Player'} sold ${propIcon} ${propName} to Bank`,
+        desc: `Property deed returned to Bank. Refunded $${refundAmount.toLocaleString()} to player balance.`,
+        amount: refundAmount,
+        actorId: owner ? owner.id : null,
+        actorName: owner ? owner.name : "",
+        actorAvatar: owner ? owner.avatar : "",
+        balanceAfter: owner ? owner.balance : null
+      });
+
+      showToast("🏦", `${propName} sold back to Bank (+$${refundAmount.toLocaleString()})`);
+      closePropertyModal();
+      saveState(false);
+    }
+
+    /* =========================================================
+       MASTER TRANSACTION HISTORY RENDERING & METRICS
+       ========================================================= */
+    function renderMasterHistory() {
+      // 1. Calculate Global History Metrics
+      let volume = 0;
+      let payouts = 0;
+      let deductions = 0;
+      let transfers = 0;
+
+      state.logs.forEach(tx => {
+        const amt = tx.amount || 0;
+        volume += amt;
+        if (tx.type === 'collect' || tx.type === 'go') payouts += amt;
+        else if (tx.type === 'deduct') deductions += amt;
+        else if (tx.type === 'transfer' || tx.type === 'property') transfers += amt;
+      });
+
+      document.getElementById("metric-volume").innerText = `$${volume.toLocaleString()}`;
+      document.getElementById("metric-payouts").innerText = `$${payouts.toLocaleString()}`;
+      document.getElementById("metric-deductions").innerText = `$${deductions.toLocaleString()}`;
+      document.getElementById("metric-transfers").innerText = `$${transfers.toLocaleString()}`;
+
+      // 2. Render Player Filter Pills
+      const pillsContainer = document.getElementById("history-player-filter-pills");
+      pillsContainer.innerHTML = "";
+
+      // All Players pill
+      const allPill = document.createElement("button");
+      allPill.className = `filter-pill ${activePlayerFilter === 'all' ? 'active' : ''}`;
+      allPill.innerHTML = `🌐 All Players (${state.logs.length})`;
+      allPill.onclick = () => setPlayerHistoryFilter('all');
+      pillsContainer.appendChild(allPill);
+
+      // Per-Player Pills with individual transaction count
+      state.players.forEach(p => {
+        const count = state.logs.filter(tx => tx.actorId === p.id || tx.receiverId === p.id).length;
+        const pill = document.createElement("button");
+        pill.className = `filter-pill ${activePlayerFilter === p.id ? 'active' : ''}`;
+        pill.innerHTML = `<span>${p.avatar}</span> <span>${escapeHtml(p.name)}</span> <span style="opacity:0.75; font-size:11px;">(${count})</span>`;
+        pill.onclick = () => setPlayerHistoryFilter(p.id);
+        pillsContainer.appendChild(pill);
+      });
+
+      // Active player indicator text
+      const nameIndicator = document.getElementById("history-active-player-name");
+      if (activePlayerFilter === 'all') {
+        nameIndicator.innerText = "Showing All Players";
+      } else {
+        const target = state.players.find(p => p.id === activePlayerFilter);
+        nameIndicator.innerText = target ? `Showing: ${target.avatar} ${target.name}` : "Showing All";
+      }
+
+      // 3. Filter Logs
+      const filtered = state.logs.filter(tx => {
+        // Player filter
+        if (activePlayerFilter !== 'all') {
+          if (tx.actorId !== activePlayerFilter && tx.receiverId !== activePlayerFilter) {
+            return false;
+          }
+        }
+
+        // Type filter
+        if (activeTypeFilter !== 'all') {
+          if (activeTypeFilter === 'collect' && tx.type !== 'collect') return false;
+          if (activeTypeFilter === 'deduct' && tx.type !== 'deduct') return false;
+          if (activeTypeFilter === 'transfer' && tx.type !== 'transfer') return false;
+          if (activeTypeFilter === 'property' && tx.type !== 'property') return false;
+          if (activeTypeFilter === 'go' && tx.type !== 'go') return false;
+        }
+
+        // Search query
+        if (activeSearchQuery) {
+          const q = activeSearchQuery.toLowerCase();
+          const matchTitle = (tx.title || "").toLowerCase().includes(q);
+          const matchDesc = (tx.desc || "").toLowerCase().includes(q);
+          const matchActor = (tx.actorName || "").toLowerCase().includes(q);
+          const matchReceiver = (tx.receiverName || "").toLowerCase().includes(q);
+          const matchAmt = (tx.amount ? tx.amount.toString() : "").includes(q);
+          if (!matchTitle && !matchDesc && !matchActor && !matchReceiver && !matchAmt) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+
+      // 4. Render Transaction Cards
+      const listEl = document.getElementById("log-list");
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div style="text-align:center; padding:32px 16px; color:var(--text-muted); font-size:14px;">
+            <span style="font-size:28px; display:block; margin-bottom:8px;">🔍</span>
+            No matching transactions found.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(tx => renderTransactionCardHtml(tx)).join("");
+    }
+
+    function renderTransactionCardHtml(tx) {
+      let icon = "📝";
+      let tagClass = "system";
+      let tagLabel = "SYSTEM";
+      let amountClass = "neutral";
+      let amountPrefix = "";
+
+      if (tx.type === 'collect') {
+        icon = "💵";
+        tagClass = "collect";
+        tagLabel = "BANK PAYOUT";
+        amountClass = "pos";
+        amountPrefix = "+$";
+      } else if (tx.type === 'deduct') {
+        icon = "🏦";
+        tagClass = "deduct";
+        tagLabel = "BANK FEE / TAX";
+        amountClass = "neg";
+        amountPrefix = "-$";
+      } else if (tx.type === 'transfer') {
+        icon = "🔄";
+        tagClass = "transfer";
+        tagLabel = "TRANSFER";
+        amountClass = "trans";
+        amountPrefix = "$";
+      } else if (tx.type === 'property') {
+        icon = "🏰";
+        tagClass = "property";
+        tagLabel = "PROPERTY DEED";
+        amountClass = "trans";
+        amountPrefix = "$";
+      } else if (tx.type === 'go') {
+        icon = "⚡";
+        tagClass = "go";
+        tagLabel = "PASS GO";
+        amountClass = "pos";
+        amountPrefix = "+$";
+      }
+
+      const displayAmt = tx.amount > 0 ? `${amountPrefix}${tx.amount.toLocaleString()}` : "";
+
+      return `
+        <div class="tx-card tx-${tx.type}">
+          <div class="tx-left">
+            <div class="tx-type-icon">${icon}</div>
+            <div class="tx-body">
+              <div class="tx-title">${tx.title || tx.desc}</div>
+              <div class="tx-subtitle">
+                <span class="tx-tag ${tagClass}">${tagLabel}</span>
+                <span>${tx.desc && tx.title ? tx.desc : ''}</span>
+              </div>
+            </div>
+          </div>
+          <div class="tx-right">
+            ${displayAmt ? `<span class="tx-amount ${amountClass}">${displayAmt}</span>` : ''}
+            <span class="tx-time">${tx.time}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function setPlayerHistoryFilter(playerId) {
+      sound.playClick();
+      activePlayerFilter = playerId;
+      renderMasterHistory();
+    }
+
+    function setTypeFilter(type) {
+      sound.playClick();
+      activeTypeFilter = type;
+      document.querySelectorAll(".type-filter-group .type-btn").forEach(btn => {
+        if (btn.getAttribute("data-type") === type) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+      renderMasterHistory();
+    }
+
+    function handleHistorySearch(val) {
+      activeSearchQuery = (val || "").trim();
+      renderMasterHistory();
+    }
+
+    /* =========================================================
+       INDIVIDUAL PLAYER STATEMENT MODAL SYSTEM
+       ========================================================= */
+    function openPlayerStatement(playerId) {
+      sound.playClick();
+      viewingStatementPlayerId = playerId;
+      updateStatementModalContent(playerId);
+      document.getElementById("statement-modal").classList.add("active");
+    }
+
+    function closeStatementModal() {
+      viewingStatementPlayerId = null;
+      document.getElementById("statement-modal").classList.remove("active");
+    }
+
+    function updateStatementModalContent(playerId) {
+      const player = state.players.find(p => p.id === playerId);
+      if (!player) return;
+
+      document.getElementById("stmt-avatar").innerText = player.avatar;
+      document.getElementById("stmt-name").innerText = player.name;
+      document.getElementById("stmt-balance-sub").innerHTML = `Cash: <strong style="color:#34d399;">$${player.balance.toLocaleString()}</strong>`;
+
+      // Filter player's owned properties
+      const ownedProps = state.properties.filter(p => p.ownerId === playerId);
+      const totalPropVal = ownedProps.reduce((sum, p) => sum + p.price, 0);
+      const netWorth = player.balance + totalPropVal;
+
+      document.getElementById("stmt-cash").innerText = `$${player.balance.toLocaleString()}`;
+      document.getElementById("stmt-props-val").innerText = `$${totalPropVal.toLocaleString()} (${ownedProps.length})`;
+      document.getElementById("stmt-networth").innerText = `$${netWorth.toLocaleString()}`;
+
+      // Property chips
+      const propChipsContainer = document.getElementById("stmt-player-property-chips");
+      if (ownedProps.length === 0) {
+        propChipsContainer.innerHTML = `<span style="font-size:12px; color:#94a3b8; font-style:italic;">No real estate owned yet.</span>`;
+      } else {
+        propChipsContainer.innerHTML = ownedProps.map(prop => `
+          <div style="background:${prop.color}; color:#fff; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:800; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(0,0,0,0.3);">
+            <span>${prop.icon} ${escapeHtml(prop.name)}</span>
+            <span style="opacity:0.85;">($${prop.price.toLocaleString()})</span>
+          </div>
+        `).join("");
+      }
+
+      // Filter player's transactions
+      const playerTxs = state.logs.filter(tx => tx.actorId === playerId || tx.receiverId === playerId);
+
+      document.getElementById("stmt-count-label").innerText = `${playerTxs.length} Transactions Recorded`;
+
+      const listEl = document.getElementById("statement-tx-list");
+      if (playerTxs.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-muted); font-size:13px;">No transactions recorded for ${player.name} yet.</div>`;
+      } else {
+        listEl.innerHTML = playerTxs.map(tx => renderTransactionCardHtml(tx)).join("");
+      }
+    }
+
+    function viewInMainLedger() {
+      if (!viewingStatementPlayerId) return;
+      const targetId = viewingStatementPlayerId;
+      closeStatementModal();
+      switchViewTab('history');
+      setPlayerHistoryFilter(targetId);
+      document.getElementById("history-section").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       TERMINAL / CASH AMOUNT LOGIC
+       ========================================================= */
+    const amountInput = document.getElementById("amount-input");
+
+    function getEnteredAmount() {
+      const clean = amountInput.value.replace(/[^0-9]/g, '');
+      const val = parseInt(clean, 10);
+      return isNaN(val) ? 0 : val;
+    }
+
+    function setExactAmount(val) {
+      sound.playClick();
+      amountInput.value = val.toLocaleString();
+      amountInput.focus();
+    }
+
+    function addNoteValue(val) {
+      sound.playClick();
+      const current = getEnteredAmount();
+      const sum = current + val;
+      amountInput.value = sum.toLocaleString();
+    }
+
+    function clearAmount() {
+      sound.playClick();
+      amountInput.value = "";
+      amountInput.focus();
+    }
+
+    // Auto format input on type
+    amountInput.addEventListener("input", (e) => {
+      const digits = e.target.value.replace(/[^0-9]/g, '');
+      if (!digits) {
+        e.target.value = "";
+        return;
+      }
+      const num = parseInt(digits, 10);
+      e.target.value = num.toLocaleString();
+    });
+
+    amountInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        executeBankTransaction('collect');
+      }
+    });
+
+    /* =========================================================
+       TRANSACTIONS: COLLECT, DEDUCT, TRANSFER
+       ========================================================= */
+    function executeBankTransaction(actionType) {
+      const val = getEnteredAmount();
+      if (val <= 0) {
+        showToast("⚠️", "Please enter a valid cash amount first.");
+        amountInput.focus();
+        return;
+      }
+
+      const active = state.players.find(p => p.id === state.selectedId);
+      if (!active) {
+        showToast("⚠️", "Please select a player first.");
+        return;
+      }
+
+      if (actionType === 'collect') {
+        saveState(true);
+        active.balance += val;
+        sound.playCashChime();
+        recordTransaction({
+          type: "collect",
+          title: `${active.avatar} ${active.name} collected +$${val.toLocaleString()}`,
+          desc: `Received from Bank reserve / salary`,
+          amount: val,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("💵", `+$${val.toLocaleString()} added to ${active.name}!`);
+      } else if (actionType === 'deduct') {
+        if (active.balance < val) {
+          sound.playDeduct();
+          showToast("⚠️", `Insufficient balance! ${active.name} only has $${active.balance.toLocaleString()} (Cannot pay $${val.toLocaleString()}). Balance cannot be negative.`);
+          return;
+        }
+
+        saveState(true);
+        active.balance = Math.max(0, active.balance - val);
+        sound.playDeduct();
+        recordTransaction({
+          type: "deduct",
+          title: `${active.avatar} ${active.name} paid -$${val.toLocaleString()}`,
+          desc: `Paid to Bank for property purchase, tax, or fees`,
+          amount: val,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🏦", `-$${val.toLocaleString()} paid by ${active.name}`);
+      }
+
+      amountInput.value = "";
+      saveState(false);
+    }
+
+    function instantPassGo() {
+      const active = state.players.find(p => p.id === state.selectedId);
+      if (!active) return;
+
+      saveState(true);
+      active.balance += 2500;
+      sound.playCashChime();
+      triggerConfetti();
+
+      recordTransaction({
+        type: "go",
+        title: `${active.avatar} ${active.name} passed GO (+$2,500)`,
+        desc: `Collected salary for completing a full lap around the board`,
+        amount: 2500,
+        actorId: active.id,
+        actorName: active.name,
+        actorAvatar: active.avatar,
+        balanceAfter: active.balance
+      });
+
+      showToast("⚡", `${active.name} passed GO! (+$2,500)`);
+      saveState(false);
+    }
+
+    function quickPlayerGo(playerId) {
+      const player = state.players.find(p => p.id === playerId);
+      if (!player) return;
+
+      saveState(true);
+      player.balance += 2500;
+      sound.playCashChime();
+      triggerConfetti();
+
+      recordTransaction({
+        type: "go",
+        title: `${player.avatar} ${player.name} passed GO (+$2,500)`,
+        desc: `Collected salary for completing a full lap around the board`,
+        amount: 2500,
+        actorId: player.id,
+        actorName: player.name,
+        actorAvatar: player.avatar,
+        balanceAfter: player.balance
+      });
+
+      showToast("⚡", `${player.name} passed GO! (+$2,500)`);
+      saveState(false);
+    }
+
+    /* =========================================================
+       TRANSFER CASH SYSTEM
+       ========================================================= */
+    function openTransferModal() {
+      const val = getEnteredAmount();
+      if (val <= 0) {
+        showToast("⚠️", "Enter an amount in the terminal to transfer.");
+        amountInput.focus();
+        return;
+      }
+
+      const active = state.players.find(p => p.id === state.selectedId);
+      if (!active) {
+        showToast("⚠️", "Select the sender player first.");
+        return;
+      }
+
+      const otherPlayers = state.players.filter(p => p.id !== state.selectedId);
+      if (otherPlayers.length === 0) {
+        showToast("⚠️", "You need at least 2 players to make a transfer.");
+        return;
+      }
+
+      document.getElementById("transfer-amount-preview").innerHTML = `
+        Transferring <strong style="color:#fbbf24; font-size:18px;">$${val.toLocaleString()}</strong><br/>
+        from ${active.avatar} <strong>${escapeHtml(active.name)}</strong>
+      `;
+
+      const list = document.getElementById("transfer-player-list");
+      list.innerHTML = "";
+
+      otherPlayers.forEach(p => {
+        const item = document.createElement("div");
+        item.className = "transfer-player-card";
+        item.onclick = () => completeTransfer(p.id, val);
+
+        item.innerHTML = `
+          <div class="transfer-player-left">
+            <span style="font-size:24px;">${p.avatar}</span>
+            <div>
+              <div style="font-weight:700; color:#fff;">${escapeHtml(p.name)}</div>
+              <div style="font-size:12px; color:#94a3b8;">Balance: $${p.balance.toLocaleString()}</div>
+            </div>
+          </div>
+          <button class="btn-header" style="background:rgba(59,130,246,0.3); color:#93c5fd; border-color:#3b82f6;">
+            Send &rarr;
+          </button>
+        `;
+        list.appendChild(item);
+      });
+
+      document.getElementById("transfer-modal").classList.add("active");
+    }
+
+    function closeTransferModal() {
+      document.getElementById("transfer-modal").classList.remove("active");
+    }
+
+    function completeTransfer(receiverId, val) {
+      const sender = state.players.find(p => p.id === state.selectedId);
+      const receiver = state.players.find(p => p.id === receiverId);
+      if (!sender || !receiver) return;
+
+      if (sender.balance < val) {
+        sound.playDeduct();
+        showToast("⚠️", `Insufficient balance! ${sender.name} only has $${sender.balance.toLocaleString()} (Cannot transfer $${val.toLocaleString()}). Balance cannot be negative.`);
+        return;
+      }
+
+      saveState(true);
+      sender.balance = Math.max(0, sender.balance - val);
+      receiver.balance += val;
+
+      sound.playTransfer();
+
+      recordTransaction({
+        type: "transfer",
+        title: `${sender.avatar} ${sender.name} &rarr; ${receiver.avatar} ${receiver.name} ($${val.toLocaleString()})`,
+        desc: `Rent payment or property deal transfer`,
+        amount: val,
+        actorId: sender.id,
+        actorName: sender.name,
+        actorAvatar: sender.avatar,
+        receiverId: receiver.id,
+        receiverName: receiver.name,
+        receiverAvatar: receiver.avatar,
+        balanceAfter: sender.balance
+      });
+
+      showToast("🔄", `Sent $${val.toLocaleString()} to ${receiver.name}!`);
+
+      amountInput.value = "";
+      closeTransferModal();
+      saveState(false);
+    }
+
+    /* =========================================================
+       UNDO SYSTEM
+       ========================================================= */
+    function undoLastAction() {
+      if (historyStack.length === 0) return;
+      const prev = JSON.parse(historyStack.pop());
+      state = prev;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      sound.playClick();
+      showToast("⤺", "Last transaction undone.");
+      render();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+        if (document.activeElement.tagName !== "INPUT") {
+          e.preventDefault();
+          undoLastAction();
+        }
+      }
+    });
+
+    /* =========================================================
+       ADD / EDIT PLAYER MODAL
+       ========================================================= */
+    function renderTokenGrid() {
+      const grid = document.getElementById("token-choice-grid");
+      grid.innerHTML = "";
+      ALL_TOKENS.forEach(token => {
+        const d = document.createElement("div");
+        d.className = `token-choice ${selectedTokenInModal === token ? 'active' : ''}`;
+        d.innerText = token;
+        d.onclick = () => {
+          selectedTokenInModal = token;
+          renderTokenGrid();
+        };
+        grid.appendChild(d);
+      });
+    }
+
+    function openAddPlayerModal() {
+      editingPlayerId = null;
+      document.getElementById("player-modal-title").innerText = "Add New Player";
+      document.getElementById("player-modal-name").value = `Player ${state.players.length + 1}`;
+      document.getElementById("player-modal-balance").value = "7000";
+      document.getElementById("starting-balance-group").style.display = "flex";
+      selectedTokenInModal = ALL_TOKENS[state.players.length % ALL_TOKENS.length];
+      renderTokenGrid();
+      document.getElementById("player-modal").classList.add("active");
+      setTimeout(() => document.getElementById("player-modal-name").focus(), 100);
+    }
+
+    function openEditPlayerModal(id) {
+      editingPlayerId = id;
+      const player = state.players.find(p => p.id === id);
+      if (!player) return;
+
+      document.getElementById("player-modal-title").innerText = "Edit Player";
+      document.getElementById("player-modal-name").value = player.name;
+      document.getElementById("starting-balance-group").style.display = "none";
+      selectedTokenInModal = player.avatar;
+      renderTokenGrid();
+      document.getElementById("player-modal").classList.add("active");
+      setTimeout(() => document.getElementById("player-modal-name").focus(), 100);
+    }
+
+    function closePlayerModal() {
+      document.getElementById("player-modal").classList.remove("active");
+    }
+
+    function savePlayerFromModal() {
+      const name = document.getElementById("player-modal-name").value.trim();
+      if (!name) {
+        alert("Please enter a player name.");
+        return;
+      }
+
+      saveState(true);
+
+      if (editingPlayerId) {
+        const player = state.players.find(p => p.id === editingPlayerId);
+        if (player) {
+          player.name = name;
+          player.avatar = selectedTokenInModal;
+          recordTransaction({
+            type: "neutral",
+            title: `Updated details for ${player.avatar} ${player.name}`,
+            desc: "Player name or token changed",
+            amount: 0,
+            actorId: player.id
+          });
+        }
+      } else {
+        const bal = Math.max(0, parseInt(document.getElementById("player-modal-balance").value, 10) || 7000);
+        const newId = Date.now();
+        state.players.push({
+          id: newId,
+          name: name,
+          avatar: selectedTokenInModal,
+          balance: bal
+        });
+        state.selectedId = newId;
+
+        recordTransaction({
+          type: "neutral",
+          title: `${selectedTokenInModal} ${name} joined game`,
+          desc: `Starting bankroll: $${bal.toLocaleString()}`,
+          amount: bal,
+          actorId: newId,
+          actorName: name,
+          actorAvatar: selectedTokenInModal,
+          balanceAfter: bal
+        });
+
+        showToast("✨", `${name} has entered the game!`);
+      }
+
+      closePlayerModal();
+      saveState(false);
+    }
+
+    function deletePlayer(id) {
+      const player = state.players.find(p => p.id === id);
+      if (!player) return;
+
+      if (!confirm(`Are you sure you want to remove ${player.name} from this game? Any owned properties will return to the Bank.`)) return;
+
+      saveState(true);
+      state.players = state.players.filter(p => p.id !== id);
+
+      // Return owned properties to Bank
+      state.properties.forEach(prop => {
+        if (prop.ownerId === id) prop.ownerId = null;
+      });
+
+      recordTransaction({
+        type: "neutral",
+        title: `${player.avatar} ${player.name} retired / left game`,
+        desc: `Final balance: $${player.balance.toLocaleString()}. Real estate deeds returned to Bank.`,
+        amount: 0,
+        actorId: id
+      });
+
+      showToast("🗑️", `${player.name} removed.`);
+
+      if (state.selectedId === id && state.players.length > 0) {
+        state.selectedId = state.players[0].id;
+      }
+      saveState(false);
+    }
+
+    /* =========================================================
+       EXPORT & COPY LEDGER UTILITIES
+       ========================================================= */
+    function copyHistoryToClipboard() {
+      sound.playClick();
+      if (state.logs.length === 0) {
+        showToast("⚠️", "No history to copy.");
+        return;
+      }
+
+      let text = "=== MONOPOLIO BANK TRANSACTION LEDGER ===\n\n";
+      state.logs.forEach(tx => {
+        text += `[${tx.time}] ${tx.title} - ${tx.desc} (Amount: $${(tx.amount || 0).toLocaleString()})\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("📋", "Ledger copied to clipboard!");
+      }).catch(() => {
+        showToast("⚠️", "Could not copy to clipboard.");
+      });
+    }
+
+    function exportHistoryCSV() {
+      sound.playClick();
+      if (state.logs.length === 0) {
+        showToast("⚠️", "No transactions to export.");
+        return;
+      }
+
+      let csv = "Time,Type,Title,Details,Amount,Actor,Receiver\n";
+      state.logs.forEach(tx => {
+        const cleanTitle = `"${(tx.title || '').replace(/"/g, '""')}"`;
+        const cleanDesc = `"${(tx.desc || '').replace(/"/g, '""')}"`;
+        const actor = `"${(tx.actorName || '').replace(/"/g, '""')}"`;
+        const receiver = `"${(tx.receiverName || '').replace(/"/g, '""')}"`;
+        csv += `${tx.time},${tx.type},${cleanTitle},${cleanDesc},${tx.amount || 0},${actor},${receiver}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `monopolio_transactions_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("💾", "Transaction CSV exported!");
+    }
+
+    /* =========================================================
+       RESET & UTILITY FUNCTIONS
+       ========================================================= */
+    function confirmResetGame() {
+      document.getElementById("reset-modal").classList.add("active");
+    }
+
+    function closeResetModal() {
+      document.getElementById("reset-modal").classList.remove("active");
+    }
+
+    function executeReset(wipeAll) {
+      saveState(true);
+      if (wipeAll) {
+        state.players = DEFAULT_PLAYERS();
+        state.selectedId = 1;
+        state.properties = JSON.parse(JSON.stringify(ALL_PROPERTIES_DATA));
+        state.logs = [];
+        recordTransaction({
+          type: "neutral",
+          title: "Fresh Game Reset",
+          desc: "Default players initialized with $7,000 each. All 27 properties returned to Bank.",
+          amount: 0,
+          actorId: null
+        }, false);
+      } else {
+        state.players.forEach(p => p.balance = 7000);
+        state.properties.forEach(p => p.ownerId = null);
+        recordTransaction({
+          type: "neutral",
+          title: "Balances & Properties Reset",
+          desc: "All existing player balances reset to standard $7,000. All properties returned to Bank.",
+          amount: 0,
+          actorId: null
+        }, false);
+      }
+
+      closeResetModal();
+      showToast("🔄", "Game reset to $7,000 complete.");
+      saveState(false);
+    }
+
+    function clearLogs() {
+      if (!confirm("Are you sure you want to clear all transaction history logs?")) return;
+      state.logs = [];
+      recordTransaction({
+        type: "neutral",
+        title: "History Cleared",
+        desc: "All previous transaction logs purged.",
+        amount: 0,
+        actorId: null
+      }, false);
+      saveState(false);
+      showToast("🧹", "Logs cleared.");
+    }
+
+    // Initialize UI
+    updateSoundButton();
+    render();
+  </script>
+</body>
+</html>
