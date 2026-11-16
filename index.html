@@ -1768,6 +1768,617 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    /* =========================================================
+       CHANCE & COMMUNITY CHEST (MONOPOLIO BOARD SPECIALS)
+       ========================================================= */
+    .cards-quick-nav-banner {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.45) 0%, rgba(139, 92, 246, 0.25) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-quick-deck {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-quick-deck:hover {
+      transform: translateY(-1px);
+    }
+    .btn-chance-quick {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.25);
+    }
+    .btn-chance-quick:hover {
+      background: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.45);
+    }
+    .btn-cc-quick {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.25);
+    }
+    .btn-cc-quick:hover {
+      background: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+    }
+
+    .cards-super-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    /* MONOPOLIO ODD/EVEN RULE MATRIX */
+    .rule-matrix-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rule-matrix-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #f59e0b, #10b981, #ef4444);
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 680px) {
+      .matrix-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .matrix-box {
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .matrix-box.odd-box {
+      background: rgba(59, 130, 246, 0.08);
+      border: 1.5px solid rgba(59, 130, 246, 0.3);
+    }
+    .matrix-box.even-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1.5px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .matrix-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .matrix-outcome-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pill-gain {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .pill-loss {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    /* DECK SELECTOR TABS */
+    .deck-selector-row {
+      display: flex;
+      gap: 12px;
+    }
+    .deck-tab-btn {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .deck-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+    .deck-tab-btn.active-chance {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.4) 100%);
+      border-color: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+    }
+    .deck-tab-btn.active-cc {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.4) 100%);
+      border-color: #f59e0b;
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+    }
+
+    /* INTERACTIVE DICE ROLLER & RESOLUTION */
+    .dice-simulator-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dice-roller-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dice-display-stage {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+    }
+
+    .dice-cube {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(145deg, #ffffff, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45), inset 0 2px 2px #fff, inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 6px;
+      gap: 3px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dice-cube.rolling {
+      animation: diceRollAnim 0.45s ease-in-out infinite alternate;
+    }
+    @keyframes diceRollAnim {
+      0% { transform: rotate(-15deg) scale(0.9); }
+      50% { transform: rotate(15deg) scale(1.08); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .pip {
+      width: 9px;
+      height: 9px;
+      background: #0f172a;
+      border-radius: 50%;
+      align-self: center;
+      justify-self: center;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,0.4);
+    }
+
+    .dice-sum-display {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .dice-sum-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fbbf24;
+      line-height: 1;
+    }
+    .dice-sum-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .tag-odd {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+    }
+    .tag-even {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .btn-roll-dice {
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      background: var(--gold-gradient);
+      color: #0f172a;
+      border: none;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-roll-dice:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
+    }
+
+    /* MANUAL DICE NUMBERS ROW */
+    .dice-num-selector-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dice-num-selector-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .dice-num-buttons-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .dice-num-buttons-row::-webkit-scrollbar {
+      height: 4px;
+    }
+    .dice-num-buttons-row::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+    .btn-num-select {
+      flex: 1;
+      min-width: 44px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+    .btn-num-select:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-num-select.active {
+      background: var(--gold-gradient);
+      color: #0f172a;
+      border-color: #f59e0b;
+      box-shadow: 0 2px 12px rgba(245, 158, 11, 0.35);
+    }
+    .btn-num-sub {
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* CARD OUTCOME RESOLUTION DISPLAY */
+    .card-outcome-box {
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+    .card-outcome-box.outcome-gain {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.08) 100%);
+      border: 1.5px solid #10b981;
+    }
+    .card-outcome-box.outcome-loss {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.08) 100%);
+      border: 1.5px solid #ef4444;
+    }
+    .card-outcome-box.outcome-special {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(109, 40, 217, 0.08) 100%);
+      border: 1.5px solid #8b5cf6;
+    }
+
+    .outcome-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .outcome-source-tag {
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #f1f5f9;
+    }
+    .outcome-result-badge {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .outcome-title-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+    .outcome-desc-text {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .outcome-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .outcome-amount-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .outcome-amount-tag.gain-color {
+      color: #34d399;
+    }
+    .outcome-amount-tag.loss-color {
+      color: #f87171;
+    }
+    .outcome-amount-tag.special-color {
+      color: #c084fc;
+    }
+
+    .btn-execute-card {
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-execute-card:hover {
+      transform: translateY(-2px);
+    }
+    .btn-execute-card.execute-gain {
+      background: var(--emerald-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+    }
+    .btn-execute-card.execute-loss {
+      background: var(--crimson-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.4);
+    }
+    .btn-execute-card.execute-special {
+      background: var(--purple-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
+    }
+
+    /* ALL 4 BOARD REFERENCE CARDS GRID */
+    .board-rules-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 900px) {
+      .board-rules-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .board-reference-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+    .board-reference-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+    .reference-card-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+    .ref-header-chance-odd {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+    .ref-header-chance-even {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+    .ref-header-cc-even {
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+    .ref-header-cc-odd {
+      background: linear-gradient(135deg, #d97706, #b45309);
+    }
+
+    .reference-items-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .ref-item-row {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.15s ease;
+    }
+    .ref-item-row:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .ref-item-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
+    }
+    .ref-roll-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .roll-badge-odd {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+    }
+    .roll-badge-even {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .ref-item-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ref-item-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .ref-item-desc {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.35;
+    }
+    .ref-item-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .ref-amount-pill {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .btn-ref-apply {
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.07);
+      color: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-ref-apply:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: #fbbf24;
+      color: #fbbf24;
+    }
   </style>
 </head>
 <body>
@@ -1816,6 +2427,9 @@
       <button class="nav-tab-btn active" id="tab-nav-terminal" onclick="switchViewTab('terminal')">
         <span>🏧</span> Bank Terminal & Cashier
       </button>
+      <button class="nav-tab-btn" id="tab-nav-cards" onclick="switchViewTab('cards')">
+        <span>🎲</span> Chance & Community Chest
+      </button>
       <button class="nav-tab-btn" id="tab-nav-properties" onclick="switchViewTab('properties')">
         <span>🏰</span> Real Estate Board (27 Properties)
       </button>
@@ -1863,6 +2477,25 @@
             <div class="banner-balance-box">
               <span class="banner-balance-label">Cash Balance</span>
               <div class="banner-balance-val" id="banner-balance">$7,000</div>
+            </div>
+          </div>
+
+          <!-- QUICK JUMP TO CHANCE / COMMUNITY CHEST -->
+          <div class="cards-quick-nav-banner">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:24px;">🎲</span>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:#f8fafc;">Landed on Chance or Community Chest?</div>
+                <div style="font-size:11px; color:#94a3b8;">Odd &bull; Even dice rules determine your Gain or Loss</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-quick-deck btn-chance-quick" onclick="openDeckFromTerminal('chance')">
+                <span>❓</span> Chance
+              </button>
+              <button class="btn-quick-deck btn-cc-quick" onclick="openDeckFromTerminal('communityChest')">
+                <span>🎁</span> Community Chest
+              </button>
             </div>
           </div>
 
@@ -1999,6 +2632,147 @@
               <button class="btn-secondary" id="btn-undo-action" onclick="undoLastAction()">
                 <span>⤺</span> Undo
               </button>
+            </div>
+
+          </section>
+        </div>
+
+        <!-- VIEW: CHANCE & COMMUNITY CHEST (Monopolio Special Board Deck) -->
+        <div id="view-cards" style="display: none; flex-direction: column; gap: 18px;">
+          <section class="cards-super-panel">
+            
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>🎲</span> Chance & Community Chest Deck (From Game Board)
+              </div>
+              <span style="font-size:12px; font-weight:700; color:#fbbf24;">
+                Monopolio Board Rules
+              </span>
+            </div>
+
+            <!-- CORE ODD / EVEN RULE MATRIX BANNER -->
+            <div class="rule-matrix-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span style="font-size:14px; font-weight:800; color:#f8fafc; display:flex; align-items:center; gap:8px;">
+                  <span>⚖️</span> Monopolio Fate Rule: Dice Roll Determines Gain vs Loss
+                </span>
+                <span style="font-size:11px; color:#94a3b8;">
+                  No paper cards! Landing on board spaces triggers these exact rules.
+                </span>
+              </div>
+
+              <div class="matrix-grid">
+                <!-- ODD ROLL MATRIX -->
+                <div class="matrix-box odd-box">
+                  <div class="matrix-badge-row">
+                    <span style="color:#60a5fa;">🎲 ODD ROLLS (3, 5, 7, 9, 11)</span>
+                    <span class="tag-odd" style="font-size:10px;">ODD TOTAL</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:12px; font-weight:700; color:#e2e8f0;">❓ Land on CHANCE:</span>
+                    <span class="matrix-outcome-pill pill-gain">🎉 GOOD &bull; GAIN (+)</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:12px; font-weight:700; color:#e2e8f0;">🎁 Land on COMM. CHEST:</span>
+                    <span class="matrix-outcome-pill pill-loss">⚠️ LOSS &bull; PAY (-)</span>
+                  </div>
+                </div>
+
+                <!-- EVEN ROLL MATRIX -->
+                <div class="matrix-box even-box">
+                  <div class="matrix-badge-row">
+                    <span style="color:#fbbf24;">🎲 EVEN ROLLS (2, 4, 6, 8, 10, 12)</span>
+                    <span class="tag-even" style="font-size:10px;">EVEN TOTAL</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:12px; font-weight:700; color:#e2e8f0;">❓ Land on CHANCE:</span>
+                    <span class="matrix-outcome-pill pill-loss">⚠️ LOSS &bull; PAY (-)</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:12px; font-weight:700; color:#e2e8f0;">🎁 Land on COMM. CHEST:</span>
+                    <span class="matrix-outcome-pill pill-gain">🎉 GOOD &bull; GAIN (+)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DECK SELECTOR TABS -->
+            <div class="deck-selector-row">
+              <button class="deck-tab-btn active-chance" id="btn-tab-chance" onclick="setCardType('chance')">
+                <span style="font-size:20px;">❓</span>
+                <div style="text-align:left;">
+                  <div>CHANCE</div>
+                  <div style="font-size:10px; font-weight:600; opacity:0.8;">Odd = Gain (+) &bull; Even = Loss (-)</div>
+                </div>
+              </button>
+              <button class="deck-tab-btn" id="btn-tab-cc" onclick="setCardType('communityChest')">
+                <span style="font-size:20px;">🎁</span>
+                <div style="text-align:left;">
+                  <div>COMMUNITY CHEST</div>
+                  <div style="font-size:10px; font-weight:600; opacity:0.8;">Even = Gain (+) &bull; Odd = Loss (-)</div>
+                </div>
+              </button>
+            </div>
+
+            <!-- INTERACTIVE DICE SIMULATOR & CARD RESOLUTION -->
+            <div class="dice-simulator-panel">
+              
+              <div class="dice-roller-header">
+                <!-- Dual Dice Visual Stage -->
+                <div class="dice-display-stage">
+                  <div class="dice-cube" id="dice-cube-1">
+                    <!-- Pips injected via JS -->
+                  </div>
+                  <div class="dice-cube" id="dice-cube-2">
+                    <!-- Pips injected via JS -->
+                  </div>
+                  <div class="dice-sum-display">
+                    <span class="dice-sum-num" id="dice-sum-text">7</span>
+                    <span class="dice-sum-tag tag-odd" id="dice-parity-tag">ODD ROLL</span>
+                  </div>
+                </div>
+
+                <!-- Roll Dice Big Button -->
+                <button class="btn-roll-dice" id="btn-roll-dice" onclick="rollCardsDice()">
+                  <span>🎲</span> Roll 2 Dice
+                </button>
+              </div>
+
+              <!-- Manual Dice Number Bar (2 to 12) -->
+              <div class="dice-num-selector-bar">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span class="dice-num-selector-title">Or Choose Your Board Dice Roll:</span>
+                  <span style="font-size:10px; color:#fbbf24; font-weight:700;" id="manual-dice-hint">Selected: Roll 7</span>
+                </div>
+                <div class="dice-num-buttons-row" id="dice-num-buttons-row">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+
+              <!-- Active Card Outcome Box -->
+              <div class="card-outcome-box outcome-gain" id="card-outcome-box">
+                <!-- Rendered dynamically via JS -->
+              </div>
+
+            </div>
+
+            <!-- FULL BOARD REFERENCE CARDS SECTION (All 4 cards from physical board) -->
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div style="font-family:'Outfit',sans-serif; font-size:15px; font-weight:800; color:#f8fafc; display:flex; align-items:center; gap:8px;">
+                  <span>📋</span> Complete Game Board Reference (All 4 Cards)
+                </div>
+                <div class="type-filter-group" style="margin-bottom:0;">
+                  <button class="type-btn active" data-cardfilter="all" onclick="setCardsFilter('all')">All 4 Cards</button>
+                  <button class="type-btn" data-cardfilter="chance" onclick="setCardsFilter('chance')">❓ Chance</button>
+                  <button class="type-btn" data-cardfilter="communityChest" onclick="setCardsFilter('communityChest')">🎁 Community Chest</button>
+                </div>
+              </div>
+
+              <!-- 4 Reference Cards Grid -->
+              <div class="board-rules-grid" id="board-rules-grid">
+                <!-- Injected via JS -->
+              </div>
             </div>
 
           </section>
@@ -2538,7 +3312,7 @@
        ========================================================= */
     const ALL_PROPERTIES_DATA = [
       // Right Side (Brown / Orange)
-      { id: "p_dubai", name: "Dubai", group: "brown", groupName: "Brown", color: "#b45309", price: 1000, icon: "🏙️", ownerId: null },
+      { id: "p_dubai", name: "Dubai", group: "brown", groupName: "Brown", color: "#b45309", price: 3000, icon: "🏙️", ownerId: null },
       { id: "p_railways", name: "Railways", group: "transport", groupName: "Transport", color: "#64748b", price: 9500, icon: "🚆", ownerId: null },
       // Right Side (Cyan / Light Blue)
       { id: "p_sri_lanka", name: "Sri Lanka", group: "cyan", groupName: "Light Blue", color: "#06b6d4", price: 3000, icon: "🏝️", ownerId: null },
@@ -2574,6 +3348,69 @@
       { id: "p_waterways", name: "Waterways", group: "transport", groupName: "Transport", color: "#64748b", price: 5500, icon: "🚢", ownerId: null },
       { id: "p_usa", name: "USA", group: "navy", groupName: "Deep Blue", color: "#2563eb", price: 9000, icon: "🗽", ownerId: null }
     ];
+
+    /* =========================================================
+       CHANCE & COMMUNITY CHEST DATA (DIRECT FROM GAME BOARD)
+       ========================================================= */
+    const BOARD_CARDS_DATA = {
+      chance: {
+        title: "Chance",
+        icon: "❓",
+        color: "#3b82f6",
+        oddTitle: "ODD ROLL = GOOD (RECEIVE FROM BANK / PLAYERS)",
+        evenTitle: "EVEN ROLL = LOSS (PAY TO BANK / EXPENSES)",
+        oddRule: "When you arrive on Chance by Odd number (3, 5, 7, 9, 11), receive rewards from Bank or players.",
+        evenRule: "When you arrive on Chance by Even number (2, 4, 6, 8, 10, 12), pay fees or expenses to the Bank.",
+        odd: [
+          { roll: 3, title: "Birthday Gift from Each Player", amount: 250, type: "collect_from_players", desc: "Celebrate your birthday! Collect $250 gift from every other active player.", badge: "🎉 Birthday Gift", isGain: true },
+          { roll: 5, title: "Man of the Match Award in Cricket", amount: 2500, type: "collect", desc: "Outstanding cricket performance! Receive $2,500 prize from the Bank.", badge: "🏏 Cricket Prize", isGain: true },
+          { roll: 7, title: "Go Back to India & Collect Bonus", amount: 2500, type: "collect", desc: "Go back to India. Collect $2,500 bonus as you pass the Start point (GO).", badge: "🕌 Start Bonus", isGain: true },
+          { roll: 9, title: "Sale of Cattle", amount: 1000, type: "collect", desc: "Livestock trading revenue! Collect $1,000 from the Bank.", badge: "🐄 Cattle Sale", isGain: true },
+          { roll: 11, title: "Advance to Dubai", amount: 1500, type: "collect", desc: "Advance directly to Dubai. Collect $1,500 travel allowance from the Bank.", badge: "🏙️ Travel Allowance", isGain: true }
+        ],
+        even: [
+          { roll: 2, title: "Pay Your School Education Fees", amount: 2000, type: "deduct", desc: "Semester academic tuition and admission fees. Pay $2,000 to the Bank.", badge: "🎓 Education Fees", isGain: false },
+          { roll: 4, title: "Loss Due to Fire in Office", amount: 4000, type: "deduct", desc: "Severe commercial workplace blaze damages. Pay $4,000 disaster recovery to the Bank.", badge: "🔥 Disaster Loss", isGain: false },
+          { roll: 6, title: "Business Tour Expenses", amount: 1000, type: "deduct", desc: "Commercial flights, overseas transport, and hotel expenses. Pay $1,000 to the Bank.", badge: "✈️ Travel Bills", isGain: false },
+          { roll: 8, title: "Loss in Share Market", amount: 1000, type: "deduct", desc: "Stock exchange slump and equity market crash (worth $1,000). Pay $1,000 to the Bank.", badge: "📉 Share Slump", isGain: false },
+          { roll: 10, title: "Marriage Celebration", amount: 1000, type: "deduct", desc: "Lavish wedding festivities and reception banquet hosting. Pay $1,000 to the Bank.", badge: "💍 Wedding Costs", isGain: false },
+          { roll: 12, title: "General Repairs on All Properties", amount: 1000, type: "deduct", desc: "Property maintenance: Pay $200 for each house and $400 for each hotel owned (standard flat $1,000). Pay $1,000 to the Bank.", badge: "🔨 General Repairs", isGain: false }
+        ]
+      },
+      communityChest: {
+        title: "Community Chest",
+        icon: "🎁",
+        color: "#eab308",
+        evenTitle: "EVEN ROLL = GOOD (RECEIVE FROM BANK / PRIZES)",
+        oddTitle: "ODD ROLL = LOSS (PAY TO BANK / PENALTIES)",
+        evenRule: "When you arrive on Community Chest by Even number (2, 4, 6, 8, 10, 12), receive dividends or prizes from the Bank.",
+        oddRule: "When you arrive on Community Chest by Odd number (3, 5, 7, 9, 11), pay fines or fees to the Bank, or Go to Jail.",
+        even: [
+          { roll: 2, title: "Dividend on Shares", amount: 2000, type: "collect", desc: "Corporate equity portfolio quarterly dividend! Receive $2,000 from the Bank.", badge: "📈 Share Dividend", isGain: true },
+          { roll: 4, title: "Prize for Best Performance in Export", amount: 2000, type: "collect", desc: "National trade export excellence ministry award! Receive $2,000 from the Bank.", badge: "🏆 Export Award", isGain: true },
+          { roll: 6, title: "Income Tax Refunds", amount: 3000, type: "collect", desc: "Annual inland tax revenue surplus rebate! Receive $3,000 refund from the Bank.", badge: "💰 Tax Refund", isGain: true },
+          { roll: 8, title: "Go Back Three Spaces, Skip Next Turn", amount: 0, type: "penalty_turn", desc: "Penalty: Move your token back 3 spaces and you cannot play your next turn.", badge: "🛑 Skip Next Turn", isGain: false },
+          { roll: 10, title: "Fixed Deposit Matures", amount: 500, type: "collect", desc: "Bank term fixed deposit matures with interest! Receive $500 from the Bank.", badge: "🏦 Fixed Deposit", isGain: true },
+          { roll: 12, title: "Won the Crossword Competitions Prize", amount: 1000, type: "collect", desc: "Grand national puzzle crossword champion! Receive $1,000 prize from the Bank.", badge: "📰 Crossword Prize", isGain: true }
+        ],
+        odd: [
+          { roll: 3, title: "School and Medical Fees", amount: 500, type: "deduct", desc: "Doctor clinic care, health prescription, and school fee. Pay $500 to the Bank.", badge: "🏥 Medical & School", isGain: false },
+          { roll: 5, title: "Fine for Accident (DUI Citation)", amount: 1500, type: "deduct", desc: "Traffic police citation for accident driving under liquor influence! Pay $1,500 penalty to the Bank.", badge: "🚨 DUI Police Fine", isGain: false },
+          { roll: 7, title: "Pay Your Insurance Premium", amount: 1500, type: "deduct", desc: "Comprehensive life & property insurance policy coverage due. Pay $1,500 premium to the Bank.", badge: "🛡️ Insurance Premium", isGain: false },
+          { roll: 9, title: "Take a Trip to New Zealand", amount: 0, type: "special_adventure", desc: "Adventure tour bonus! Advance token to New Zealand along Adventure Short-Cut route.", badge: "🥝 Adventure Tour", isGain: true },
+          { roll: 11, title: "Go To Jail", amount: 0, type: "jail", desc: "Direct arrest! Move token directly to Jail. Do not pass GO, do not collect $2,500.", badge: "🔒 Go Directly to Jail", isGain: false }
+        ]
+      }
+    };
+
+    let cardsState = {
+      selectedDeck: 'chance', // 'chance' or 'communityChest'
+      dice1: 3,
+      dice2: 4,
+      currentRoll: 7,
+      isRolling: false,
+      activeFilter: 'all' // 'all', 'chance', 'communityChest'
+    };
 
     /* =========================================================
        GAME STATE MANAGEMENT
@@ -2619,6 +3456,19 @@
         if (!Array.isArray(state.logs)) state.logs = [];
         if (!Array.isArray(state.properties) || state.properties.length !== ALL_PROPERTIES_DATA.length) {
           state.properties = JSON.parse(JSON.stringify(ALL_PROPERTIES_DATA));
+        } else {
+          // Sync static property definition updates (e.g. price) while keeping ownership
+          state.properties.forEach(p => {
+            const def = ALL_PROPERTIES_DATA.find(d => d.id === p.id);
+            if (def) {
+              p.price = def.price;
+              p.name = def.name;
+              p.color = def.color;
+              p.icon = def.icon;
+              p.group = def.group;
+              p.groupName = def.groupName;
+            }
+          });
         }
         if (Array.isArray(state.players)) {
           state.players.forEach(p => {
@@ -2698,14 +3548,477 @@
       currentViewTab = tab;
       
       document.querySelectorAll(".nav-tab-btn").forEach(btn => btn.classList.remove("active"));
-      document.getElementById(`tab-nav-${tab}`).classList.add("active");
+      const activeBtn = document.getElementById(`tab-nav-${tab}`);
+      if (activeBtn) activeBtn.classList.add("active");
 
       document.getElementById("view-terminal").style.display = tab === 'terminal' ? 'flex' : 'none';
+      document.getElementById("view-cards").style.display = tab === 'cards' ? 'flex' : 'none';
       document.getElementById("view-properties").style.display = tab === 'properties' ? 'flex' : 'none';
       document.getElementById("view-history").style.display = tab === 'history' ? 'flex' : 'none';
 
+      if (tab === 'cards') renderCardsSection();
       if (tab === 'properties') renderPropertiesMarket();
       if (tab === 'history') renderMasterHistory();
+    }
+
+    /* =========================================================
+       CHANCE & COMMUNITY CHEST LOGIC & RENDER
+       ========================================================= */
+    function openDeckFromTerminal(type) {
+      cardsState.selectedDeck = type;
+      switchViewTab('cards');
+      setCardType(type);
+    }
+
+    function setCardType(type) {
+      sound.playClick();
+      cardsState.selectedDeck = type;
+      const btnChance = document.getElementById("btn-tab-chance");
+      const btnCC = document.getElementById("btn-tab-cc");
+      if (btnChance) btnChance.className = `deck-tab-btn ${type === 'chance' ? 'active-chance' : ''}`;
+      if (btnCC) btnCC.className = `deck-tab-btn ${type === 'communityChest' ? 'active-cc' : ''}`;
+      renderCardsSection();
+    }
+
+    function setCardsFilter(filter) {
+      sound.playClick();
+      cardsState.activeFilter = filter;
+      document.querySelectorAll("[data-cardfilter]").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-cardfilter") === filter);
+      });
+      renderBoardReferenceCards();
+    }
+
+    function getDicePipsHtml(val) {
+      const pipCoords = {
+        1: [[2, 2]],
+        2: [[1, 1], [3, 3]],
+        3: [[1, 1], [2, 2], [3, 3]],
+        4: [[1, 1], [1, 3], [3, 1], [3, 3]],
+        5: [[1, 1], [1, 3], [2, 2], [3, 1], [3, 3]],
+        6: [[1, 1], [2, 1], [3, 1], [1, 3], [2, 3], [3, 3]]
+      };
+      const coords = pipCoords[val] || [[2, 2]];
+      let html = "";
+      for (let r = 1; r <= 3; r++) {
+        for (let c = 1; c <= 3; c++) {
+          const hasPip = coords.some(([pr, pc]) => pr === r && pc === c);
+          if (hasPip) {
+            html += `<div class="pip" style="grid-row:${r}; grid-column:${c};"></div>`;
+          }
+        }
+      }
+      return html;
+    }
+
+    function rollCardsDice() {
+      if (cardsState.isRolling) return;
+      sound.playClick();
+      cardsState.isRolling = true;
+      const btn = document.getElementById("btn-roll-dice");
+      const d1El = document.getElementById("dice-cube-1");
+      const d2El = document.getElementById("dice-cube-2");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span>🎲</span> Rolling...`;
+      }
+      if (d1El) d1El.classList.add("rolling");
+      if (d2El) d2El.classList.add("rolling");
+
+      let count = 0;
+      const interval = setInterval(() => {
+        const temp1 = Math.floor(Math.random() * 6) + 1;
+        const temp2 = Math.floor(Math.random() * 6) + 1;
+        if (d1El) d1El.innerHTML = getDicePipsHtml(temp1);
+        if (d2El) d2El.innerHTML = getDicePipsHtml(temp2);
+        const sumEl = document.getElementById("dice-sum-text");
+        if (sumEl) sumEl.innerText = temp1 + temp2;
+        count++;
+        if (count >= 10) {
+          clearInterval(interval);
+          const final1 = Math.floor(Math.random() * 6) + 1;
+          const final2 = Math.floor(Math.random() * 6) + 1;
+          cardsState.dice1 = final1;
+          cardsState.dice2 = final2;
+          cardsState.currentRoll = final1 + final2;
+          cardsState.isRolling = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<span>🎲</span> Roll 2 Dice`;
+          }
+          if (d1El) d1El.classList.remove("rolling");
+          if (d2El) d2El.classList.remove("rolling");
+          renderCardsSection();
+        }
+      }, 45);
+    }
+
+    function selectDiceNumber(num) {
+      if (cardsState.isRolling) return;
+      sound.playClick();
+      cardsState.currentRoll = num;
+      const d1 = Math.max(1, Math.min(6, Math.floor(num / 2)));
+      const d2 = num - d1;
+      cardsState.dice1 = d1;
+      cardsState.dice2 = d2;
+      renderCardsSection();
+    }
+
+    function renderCardsSection() {
+      const active = state.players.find(p => p.id === state.selectedId);
+      const roll = cardsState.currentRoll;
+      const isOdd = roll % 2 !== 0;
+      const deckKey = cardsState.selectedDeck;
+      const deckData = BOARD_CARDS_DATA[deckKey];
+
+      // Update Dice UI
+      const d1El = document.getElementById("dice-cube-1");
+      const d2El = document.getElementById("dice-cube-2");
+      if (d1El && d2El) {
+        d1El.innerHTML = getDicePipsHtml(cardsState.dice1);
+        d2El.innerHTML = getDicePipsHtml(cardsState.dice2);
+      }
+      const sumText = document.getElementById("dice-sum-text");
+      if (sumText) sumText.innerText = roll;
+
+      const parityTag = document.getElementById("dice-parity-tag");
+      if (parityTag) {
+        if (isOdd) {
+          parityTag.className = "dice-sum-tag tag-odd";
+          parityTag.innerText = "ODD ROLL";
+        } else {
+          parityTag.className = "dice-sum-tag tag-even";
+          parityTag.innerText = "EVEN ROLL";
+        }
+      }
+
+      const hintEl = document.getElementById("manual-dice-hint");
+      if (hintEl) {
+        hintEl.innerText = `Selected: Roll ${roll} (${isOdd ? 'ODD' : 'EVEN'})`;
+      }
+
+      // Render manual number buttons (2 to 12)
+      const numRow = document.getElementById("dice-num-buttons-row");
+      if (numRow) {
+        let numHtml = "";
+        for (let n = 2; n <= 12; n++) {
+          const isNumOdd = n % 2 !== 0;
+          const isActive = n === roll;
+          // Determine if it's gain or loss in current deck
+          const isGain = deckKey === 'chance' ? isNumOdd : !isNumOdd;
+          const statusIcon = isGain ? "🟢" : "🔴";
+          numHtml += `
+            <button class="btn-num-select ${isActive ? 'active' : ''}" onclick="selectDiceNumber(${n})">
+              <span>${n}</span>
+              <span class="btn-num-sub">${isNumOdd ? 'ODD' : 'EVEN'}</span>
+              <span style="font-size:9px;">${statusIcon}</span>
+            </button>
+          `;
+        }
+        numRow.innerHTML = numHtml;
+      }
+
+      // Find current rule
+      const ruleList = isOdd ? deckData.odd : deckData.even;
+      const currentRule = ruleList.find(r => r.roll === roll);
+
+      // Render Outcome Box
+      const outcomeBox = document.getElementById("card-outcome-box");
+      if (outcomeBox && currentRule) {
+        let boxTypeClass = "outcome-gain";
+        let resultBadgeClass = "pill-gain";
+        let resultBadgeText = "🎉 GOOD &bull; GAIN (+)";
+        let actionBtnClass = "execute-gain";
+        let amountClass = "gain-color";
+        let amountText = `+$${currentRule.amount.toLocaleString()}`;
+        let actionLabel = `Collect +$${currentRule.amount.toLocaleString()}`;
+
+        if (currentRule.type === 'deduct') {
+          boxTypeClass = "outcome-loss";
+          resultBadgeClass = "pill-loss";
+          resultBadgeText = "⚠️ LOSS &bull; PAY (-)";
+          actionBtnClass = "execute-loss";
+          amountClass = "loss-color";
+          amountText = `-$${currentRule.amount.toLocaleString()}`;
+          actionLabel = `Pay Bank -$${currentRule.amount.toLocaleString()}`;
+        } else if (currentRule.type === 'collect_from_players') {
+          boxTypeClass = "outcome-gain";
+          resultBadgeClass = "pill-gain";
+          resultBadgeText = "🎁 PLAYER GIFTS (+)";
+          actionBtnClass = "execute-gain";
+          amountClass = "gain-color";
+          const countOthers = Math.max(0, state.players.length - 1);
+          amountText = `+$250 / player (+$${(250 * countOthers).toLocaleString()})`;
+          actionLabel = `Collect $250 From All Players (+$${(250 * countOthers).toLocaleString()})`;
+        } else if (currentRule.amount === 0) {
+          boxTypeClass = "outcome-special";
+          resultBadgeClass = "pill-gain";
+          resultBadgeText = currentRule.type === 'jail' ? "🔒 JAIL ARREST" : "🚨 BOARD ACTION";
+          actionBtnClass = "execute-special";
+          amountClass = "special-color";
+          amountText = currentRule.type === 'jail' ? "GO TO JAIL" : "MOVE SPACES";
+          actionLabel = `Log Action to Ledger`;
+        }
+
+        outcomeBox.className = `card-outcome-box ${boxTypeClass}`;
+        const activeName = active ? `${active.avatar} ${escapeHtml(active.name)}` : "None Selected";
+
+        outcomeBox.innerHTML = `
+          <div class="outcome-top-row">
+            <div class="outcome-source-tag">
+              <span style="font-size:18px;">${deckData.icon}</span>
+              <span>${deckData.title} &bull; Roll ${roll} (${isOdd ? 'ODD' : 'EVEN'})</span>
+            </div>
+            <div class="outcome-result-badge ${resultBadgeClass}">
+              ${resultBadgeText}
+            </div>
+          </div>
+
+          <div>
+            <div class="outcome-title-text">${escapeHtml(currentRule.title)}</div>
+            <div class="outcome-desc-text" style="margin-top:4px;">${escapeHtml(currentRule.desc)}</div>
+          </div>
+
+          <div class="outcome-action-row">
+            <div>
+              <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">
+                Target: <strong style="color:#fbbf24;">${activeName}</strong>
+              </div>
+              <div class="outcome-amount-tag ${amountClass}">${amountText}</div>
+            </div>
+
+            <button class="btn-execute-card ${actionBtnClass}" onclick="executeActiveCard()">
+              <span>⚡</span> ${actionLabel}
+            </button>
+          </div>
+        `;
+      }
+
+      renderBoardReferenceCards();
+    }
+
+    function renderBoardReferenceCards() {
+      const container = document.getElementById("board-rules-grid");
+      if (!container) return;
+
+      const filter = cardsState.activeFilter;
+      const active = state.players.find(p => p.id === state.selectedId);
+
+      const cardsToRender = [
+        {
+          key: "chance_odd",
+          deckKey: "chance",
+          isOdd: true,
+          headerClass: "ref-header-chance-odd",
+          title: "❓ Chance &bull; Odd Rolls (3, 5, 7, 9, 11)",
+          sub: "🎉 GOOD &bull; RECEIVE FROM BANK / PLAYERS",
+          items: BOARD_CARDS_DATA.chance.odd
+        },
+        {
+          key: "chance_even",
+          deckKey: "chance",
+          isOdd: false,
+          headerClass: "ref-header-chance-even",
+          title: "❓ Chance &bull; Even Rolls (2, 4, 6, 8, 10, 12)",
+          sub: "⚠️ LOSS &bull; PAY TO BANK / EXPENSES",
+          items: BOARD_CARDS_DATA.chance.even
+        },
+        {
+          key: "cc_even",
+          deckKey: "communityChest",
+          isOdd: false,
+          headerClass: "ref-header-cc-even",
+          title: "🎁 Community Chest &bull; Even Rolls (2, 4, 6, 8, 10, 12)",
+          sub: "🎉 GOOD &bull; RECEIVE FROM BANK / PRIZES",
+          items: BOARD_CARDS_DATA.communityChest.even
+        },
+        {
+          key: "cc_odd",
+          deckKey: "communityChest",
+          isOdd: true,
+          headerClass: "ref-header-cc-odd",
+          title: "🎁 Community Chest &bull; Odd Rolls (3, 5, 7, 9, 11)",
+          sub: "⚠️ LOSS &bull; PAY TO BANK / FINES / JAIL",
+          items: BOARD_CARDS_DATA.communityChest.odd
+        }
+      ];
+
+      let html = "";
+      cardsToRender.forEach(card => {
+        if (filter === 'chance' && card.deckKey !== 'chance') return;
+        if (filter === 'communityChest' && card.deckKey !== 'communityChest') return;
+
+        let rowsHtml = "";
+        card.items.forEach(item => {
+          let amtDisplay = "";
+          if (item.type === 'collect') {
+            amtDisplay = `<span class="ref-amount-pill pill-gain">+$${item.amount.toLocaleString()}</span>`;
+          } else if (item.type === 'deduct') {
+            amtDisplay = `<span class="ref-amount-pill pill-loss">-$${item.amount.toLocaleString()}</span>`;
+          } else if (item.type === 'collect_from_players') {
+            amtDisplay = `<span class="ref-amount-pill pill-gain">+$250 / ea</span>`;
+          } else if (item.type === 'jail') {
+            amtDisplay = `<span class="ref-amount-pill" style="background:rgba(139,92,246,0.2); border:1px solid rgba(139,92,246,0.4); color:#c084fc;">Jail</span>`;
+          } else {
+            amtDisplay = `<span class="ref-amount-pill" style="background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.4); color:#fbbf24;">Action</span>`;
+          }
+
+          rowsHtml += `
+            <div class="ref-item-row">
+              <div class="ref-item-left">
+                <div class="ref-roll-badge ${card.isOdd ? 'roll-badge-odd' : 'roll-badge-even'}">
+                  ${item.roll}
+                </div>
+                <div class="ref-item-details">
+                  <div class="ref-item-title">${escapeHtml(item.title)}</div>
+                  <div class="ref-item-desc">${escapeHtml(item.desc)}</div>
+                </div>
+              </div>
+              <div class="ref-item-right">
+                ${amtDisplay}
+                <button class="btn-ref-apply" title="Apply this rule directly to active player" onclick="quickApplyRule('${card.deckKey}', ${card.isOdd}, ${item.roll})">
+                  ⚡ Apply
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+          <div class="board-reference-card">
+            <div class="reference-card-header ${card.headerClass}">
+              <div>${card.title}</div>
+              <div style="font-size:11px; opacity:0.9;">${card.sub}</div>
+            </div>
+            <div class="reference-items-list">
+              ${rowsHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function executeActiveCard() {
+      const roll = cardsState.currentRoll;
+      const isOdd = roll % 2 !== 0;
+      const deckKey = cardsState.selectedDeck;
+      const deckData = BOARD_CARDS_DATA[deckKey];
+      const list = isOdd ? deckData.odd : deckData.even;
+      const item = list.find(r => r.roll === roll);
+      if (!item) return;
+
+      applyRuleToActivePlayer(deckData, isOdd, item);
+    }
+
+    function quickApplyRule(deckKey, isOdd, roll) {
+      const deckData = BOARD_CARDS_DATA[deckKey];
+      const list = isOdd ? deckData.odd : deckData.even;
+      const item = list.find(r => r.roll === roll);
+      if (!item) return;
+
+      applyRuleToActivePlayer(deckData, isOdd, item);
+    }
+
+    function applyRuleToActivePlayer(deckData, isOdd, item) {
+      const active = state.players.find(p => p.id === state.selectedId);
+      if (!active) {
+        showToast("⚠️", "Please select an active player first.");
+        return;
+      }
+
+      saveState(true);
+
+      if (item.type === 'collect') {
+        active.balance += item.amount;
+        sound.playCashChime();
+        if (item.amount >= 2000) launchConfetti();
+        recordTransaction({
+          type: "collect",
+          title: `${active.avatar} ${active.name}: ${item.title} (+$${item.amount.toLocaleString()})`,
+          desc: `${deckData.title} &bull; Roll ${item.roll} (${isOdd ? 'ODD' : 'EVEN'}): ${item.desc}`,
+          amount: item.amount,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🎉", `+$${item.amount.toLocaleString()} added to ${active.name}`);
+      } else if (item.type === 'deduct') {
+        if (active.balance < item.amount) {
+          sound.playDeduct();
+          showToast("⚠️", `Insufficient balance! ${active.name} only has $${active.balance.toLocaleString()} (Needs $${item.amount.toLocaleString()}).`);
+          return;
+        }
+        active.balance = Math.max(0, active.balance - item.amount);
+        sound.playDeduct();
+        recordTransaction({
+          type: "deduct",
+          title: `${active.avatar} ${active.name}: ${item.title} (-$${item.amount.toLocaleString()})`,
+          desc: `${deckData.title} &bull; Roll ${item.roll} (${isOdd ? 'ODD' : 'EVEN'}): ${item.desc}`,
+          amount: item.amount,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🏦", `-$${item.amount.toLocaleString()} paid by ${active.name}`);
+      } else if (item.type === 'collect_from_players') {
+        const others = state.players.filter(p => p.id !== active.id);
+        if (others.length === 0) {
+          showToast("ℹ️", "No other players to collect birthday gifts from!");
+          return;
+        }
+        let totalReceived = 0;
+        others.forEach(other => {
+          other.balance = Math.max(0, other.balance - 250);
+          totalReceived += 250;
+        });
+        active.balance += totalReceived;
+        sound.playCashChime();
+        launchConfetti();
+        recordTransaction({
+          type: "transfer",
+          title: `${active.avatar} ${active.name} Birthday Gift (+$${totalReceived.toLocaleString()})`,
+          desc: `Collected $250 birthday gift from each of: ${others.map(p => p.name).join(', ')}`,
+          amount: totalReceived,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🎂", `Birthday gift! +$${totalReceived.toLocaleString()} received from players`);
+      } else if (item.type === 'jail') {
+        sound.playDeduct();
+        recordTransaction({
+          type: "neutral",
+          title: `🚨 ${active.avatar} ${active.name} Sent Directly to JAIL!`,
+          desc: `Community Chest Roll 11 (ODD): Police apprehension! Do not pass GO, do not collect $2,500.`,
+          amount: 0,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🔒", `${active.name} was sent directly to JAIL!`);
+      } else {
+        sound.playClick();
+        recordTransaction({
+          type: "neutral",
+          title: `🎲 ${active.avatar} ${active.name}: ${item.title}`,
+          desc: `${deckData.title} Roll ${item.roll}: ${item.desc}`,
+          amount: 0,
+          actorId: active.id,
+          actorName: active.name,
+          actorAvatar: active.avatar,
+          balanceAfter: active.balance
+        });
+        showToast("🎲", `${item.title} logged for ${active.name}`);
+      }
+
+      saveState(false);
+      render();
     }
 
     /* =========================================================
@@ -2823,6 +4136,7 @@
       document.getElementById("btn-undo-action").disabled = historyStack.length === 0;
 
       // 6. Refresh views
+      if (currentViewTab === 'cards') renderCardsSection();
       renderPropertiesMarket();
       renderMasterHistory();
       if (viewingStatementPlayerId) {
@@ -3888,6 +5202,7 @@
 
     // Initialize UI
     updateSoundButton();
+    renderCardsSection();
     render();
   </script>
 </body>
